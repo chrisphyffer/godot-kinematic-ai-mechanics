@@ -17,34 +17,6 @@ const ROTATION_SPEED = 1
 
 func _process(delta):
 
-	var angle
-
-	if path.size() > 1:
-		#get_node("Robot").rotate_y(angle)
-
-		var atpos = path[path.size() - 1]
-		var desired_transform = get_node("Robot").transform.looking_at(atpos, Vector3(0,1,0))
-
-
-
-
-		#set_rotation(Matrix3(smooth_rot).get_euler())
-
-		print( desired_transform.basis.get_euler().y, " = ", get_node("Robot").transform.basis.get_euler().y )
-
-		path = []
-		set_process(false)
-
-		pass
-
-
-
-
-
-
-
-
-
 	return
 
 	if (path.size() > 1):
@@ -81,11 +53,29 @@ func _process(delta):
 func _update_path():
 	var p = get_simple_path(begin, end, true)
 	path = Array(p) # Vector3array too complex to use, convert to regular array
-	path.invert()
+	#path.invert()
 
 	if path.size() and not path.empty():
+		for i in range(0, path.size() ):
+			#path[i].y = 0
+			pass
+
 		$SimpleMan.set_paths(path)
 	#set_process(true)
+
+	if (draw_path):
+		var im = get_node("Draw")
+		im.set_material_override(m)
+		im.clear()
+		im.begin(Mesh.PRIMITIVE_POINTS, null)
+		
+		im.add_vertex(Vector3(begin.x, begin.y, begin.z ) )
+		im.add_vertex(Vector3(end.x, end.y, end.z ) )
+		im.end()
+		im.begin(Mesh.PRIMITIVE_LINE_STRIP, null)
+		for x in p:
+			im.add_vertex(x)
+		im.end()
 
 
 func _input(event):
@@ -95,10 +85,42 @@ func _input(event):
 		var to = from + get_node("Camera").project_ray_normal(event.position)*100
 		var p = get_closest_point_to_segment(from, to)
 
-		begin = get_closest_point(get_node("Robot").get_translation())
+		begin = get_closest_point(get_node("SimpleMan").get_translation())
 		end = p
 
 		_update_path()
+
+var character_queues = []
+
+func generate_path(requester, destination):
+	print( requester.get_instance_id() )
+	
+	var start_path = get_closest_point(requester.get_translation())
+	var end_path = get_closest_point(destination.get_translation())
+	var p = get_simple_path(start_path, end_path, true)
+	var found_queue
+
+	
+	for i in range(0, character_queues.size()):
+		if character_queues[i].name == requester.get_instance_id():
+			found_queue = i
+			break
+			
+	var dictionary_form = {
+		'name' : requester.get_instance_id(),
+		'begin' : start_path,
+		'end' : end_path,
+		'paths' : Array(p)
+	}
+		
+	if found_queue:
+		character_queues[found_queue] = dictionary_form
+	else:
+		character_queues.append(dictionary_form)
+	
+	return Array(p)
+	
+	pass
 
 func _ready():
 	set_process_input(true)

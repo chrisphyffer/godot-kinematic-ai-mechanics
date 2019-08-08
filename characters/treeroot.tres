@@ -1,6 +1,6 @@
 [gd_resource type="AnimationNodeBlendTree" load_steps=5 format=2]
 
-[sub_resource type="AnimationNodeAnimation" id=6]
+[sub_resource type="AnimationNodeAnimation" id=1]
 animation = "Idle"
 
 [sub_resource type="AnimationNodeAnimation" id=2]
@@ -10,7 +10,7 @@ animation = "Walk"
 animation = "Run"
 
 [sub_resource type="AnimationNodeBlendSpace1D" id=4]
-blend_point_0/node = SubResource( 6 )
+blend_point_0/node = SubResource( 1 )
 blend_point_0/pos = 0.0
 blend_point_1/node = SubResource( 2 )
 blend_point_1/pos = 1.0
