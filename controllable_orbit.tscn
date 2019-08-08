@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Spatial.gd" type="Script" id=1]
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="CSGTorus" type="CSGTorus" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.9319, 0, 2.78371 )
+
+[node name="CSGSphere" type="CSGSphere" parent="."]
+radial_segments = 6
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.587358, 0.566641, -0.577865, 0, 0.714007, 0.700139, 0.809327, -0.411232, 0.419378, -27.1299, 32.8704, 19.6891 )
+
+[node name="CSGCylinder" type="CSGCylinder" parent="."]
