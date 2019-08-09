@@ -122,6 +122,8 @@ func _physics_process(delta):
 
 			remaining_access_time = DESTINATION_ACCESS_TIME
 
+		
+		
 		# Is our character unable to reach their destination in time?
 		if remaining_access_time <= 0:
 			remaining_access_time = DESTINATION_ACCESS_TIME
@@ -134,7 +136,7 @@ func _physics_process(delta):
 					return
 
 			print('Could Not reach destination in time.. Teleporting: ', teleport_on_fail)
-
+		
 		remaining_access_time -= delta
 
 		# Is our character stuck?
@@ -151,8 +153,9 @@ func _physics_process(delta):
 
 			beginning_position = transform.origin # Record this beginning position
 			time_distance_moved = 0
-
+		
 	_process_movement(delta)
+	
 	_check_vision(delta)
 
 func grab_random_waypoint():

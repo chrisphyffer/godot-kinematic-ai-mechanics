@@ -92,7 +92,7 @@ func path_completed(requester):
 		if drawNode:
 			drawNode.queue_free()
 
-func do_draw_path(characterIndex, player = false):
+func do_draw_path(characterIndex):
 	
 	var m = SpatialMaterial.new()
 	m.albedo_color = Color(255, 255, 255, .5)
