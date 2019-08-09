@@ -9,10 +9,20 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Character",
+"class": "AI",
+"language": "GDScript",
+"path": "res://characters/CharacterAI.gd"
+}, {
 "base": "KinematicBody",
 "class": "Character",
 "language": "GDScript",
-"path": "res://characters/simple_man.gd"
+"path": "res://characters/Character.gd"
+}, {
+"base": "Character",
+"class": "Player",
+"language": "GDScript",
+"path": "res://characters/CharacterPlayer.gd"
 }, {
 "base": "MeshInstance",
 "class": "Waypoint",
@@ -20,7 +30,9 @@ _global_script_classes=[ {
 "path": "res://Waypoint.gd"
 } ]
 _global_script_class_icons={
+"AI": "",
 "Character": "",
+"Player": "",
 "Waypoint": ""
 }
 

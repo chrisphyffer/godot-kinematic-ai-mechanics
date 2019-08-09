@@ -14,11 +14,9 @@ var orientation = Transform()
 var velocity = Vector3()
 const GRAVITY = Vector3(0,-9.8, 0)
 
-export var is_ai = false
-
 export(Material) var body_material setget set_body_material
 
-export(Array, NodePath) var waypoints
+
 
 var navLevel
 
@@ -32,8 +30,9 @@ var errors = 0
 
 const INTERVAL_TO_CHECK_DISTANCE_MOVED = 1
 var time_distance_moved = 0
-var beginning_position = Vector3()
-var CHARACTER_STUCK_DEADZONE = .2
+var beginning_position:Vector3 = Vector3()
+var CHARACTER_STUCK_DEADZONE:float = .2
+export var ACCEPTABLE_PATH_DISTANCE:float = .5
 
 
 # If I cannot access my destination time (whether there is someone in the way or
@@ -41,21 +40,28 @@ var CHARACTER_STUCK_DEADZONE = .2
 const DESTINATION_ACCESS_TIME = 6000
 var remaining_access_time = DESTINATION_ACCESS_TIME
 
+export var locomotion_speed:float = 1
+
+
+#############
+# Draw Style
+export var draw_color:Color = Color(1, 1, 1, 1)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	orientation=global_transform
 	orientation.origin = Vector3()
 	navLevel = get_tree().get_root().find_node('Level', true, false)
 
-	if is_ai:
-		$AnimationTree["parameters/Locomotion/blend_position"] = 2
-		#$AnimationTree["parameters/Locomotion/blend_position"] = 1
-
 func set_body_material(mat: Material):
 	find_node('SimpleManMesh').set_surface_material(0, mat)
 
 
+var process_movement : bool = true
 func _process_movement(delta):
+	
+	if not process_movement:
+		return
 
 	if typeof(paths) != TYPE_ARRAY:
 		$AnimationTree["parameters/Locomotion/blend_position"] = 0
@@ -64,12 +70,16 @@ func _process_movement(delta):
 	if paths.empty():
 		$AnimationTree["parameters/Locomotion/blend_position"] = 0
 		return
+		
+	$AnimationTree["parameters/Locomotion/blend_position"] = locomotion_speed
+	$AnimationTree["parameters/LocomotionTimeScale/scale"] = 1
 
-	if global_transform.origin.distance_to(paths[0]) < .5:
+	if global_transform.origin.distance_to(paths[0]) < ACCEPTABLE_PATH_DISTANCE:
 		accumulated_rotation = 0
 		paths.remove(0)
 
 		if paths.empty():
+			navLevel.path_completed(self)
 			return
 
 	var t = transform
@@ -85,9 +95,6 @@ func _process_movement(delta):
 
 	if not rotated_to_position:
 		orientation.basis = Transform(thisRotation, t.origin).basis
-
-	$AnimationTree["parameters/Locomotion/blend_position"] = 2
-	$AnimationTree["parameters/LocomotionTimeScale/scale"] = 1
 
 	var root_motion = $AnimationTree.get_root_motion_transform()
 
@@ -107,67 +114,12 @@ func _process_movement(delta):
 
 	pass
 
-
-
 func _physics_process(delta):
-
-	if is_ai and path_fail:
-		return
-
-	if is_ai:
-		if paths.empty():
-			if not generate_paths(grab_random_waypoint()):
-				return
-				# Try again, otherwise, just idle this pawn.
-
-			remaining_access_time = DESTINATION_ACCESS_TIME
-
-		
-		
-		# Is our character unable to reach their destination in time?
-		if remaining_access_time <= 0:
-			remaining_access_time = DESTINATION_ACCESS_TIME
-
-			if teleport_on_fail:
-				global_transform.origin = paths[paths.size()-1]
-				paths = []
-			else:
-				if not generate_paths(grab_random_waypoint()):
-					return
-
-			print('Could Not reach destination in time.. Teleporting: ', teleport_on_fail)
-		
-		remaining_access_time -= delta
-
-		# Is our character stuck?
-		time_distance_moved += delta
-
-		if time_distance_moved >= INTERVAL_TO_CHECK_DISTANCE_MOVED: #If one second has elapsed
-			var total_position = transform.origin - beginning_position # Generate a Vector difference between the two.
-			if total_position.length() < CHARACTER_STUCK_DEADZONE: # The character might be stuck.
-
-				# Find nearest waypoint behind the character.
-				find_nearest_waypoint_behind = true
-
-				#generate_paths(grab_random_waypoint())
-
-			beginning_position = transform.origin # Record this beginning position
-			time_distance_moved = 0
-		
 	_process_movement(delta)
-	
 	_check_vision(delta)
 
-func grab_random_waypoint():
-	var waypoint
-	while not waypoint:
-		waypoint = get_tree().get_root().find_node( waypoints[ int( round( rand_range( 0, waypoints.size() - 1 ) ) ) ], true, false )
-		errors += 1
-
-	return waypoint
-
-func generate_paths(waypoint: Node):
-	paths = navLevel.generate_path(self, waypoint.get_translation())
+func generate_paths(destination: Vector3):
+	paths = navLevel.generate_path(self, destination)
 	if paths and not paths.empty():
 		return true
 
@@ -175,20 +127,17 @@ func generate_paths(waypoint: Node):
 	print('Path Fail')
 	return false
 
-# Player Only
-func set_path(paths_arg: Array):
-	accumulated_rotation = 0
-	paths = paths_arg
-	arrived_at_position = false
-	rotated_to_position = false
-	$AnimationTree["parameters/Locomotion/blend_position"] = 1
-
 
 var find_nearest_waypoint_behind = false
 
 ##################
 # CHECK VISION
+var process_vision : bool = true
 func _check_vision(delta):
+	
+	if not process_vision:
+		return
+	
 	#Scan for waypoints behind this character.
 	if find_nearest_waypoint_behind:
 		#print('Character stuck, finding nearest waypoint away from my facing direction')
@@ -208,10 +157,12 @@ func _check_vision(delta):
 				#	find_nearest_waypoint_behind = false
 				#	break
 		
-		if find_nearest_waypoint_behind:
-			generate_paths(grab_random_waypoint())
-			find_nearest_waypoint_behind = false
-			$AreaOfAwareness.monitoring = false
+		#if find_nearest_waypoint_behind:
+			#var waypoint = grab_random_waypoint()
+			#if waypoint:
+			#	generate_paths(waypoint)
+			#find_nearest_waypoint_behind = false
+			#$AreaOfAwareness.monitoring = false
 
 	pass
 

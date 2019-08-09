@@ -1,11 +1,14 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=25 format=2]
 
-[ext_resource path="res://nav_mesh_root_driven.gd" type="Script" id=1]
+[ext_resource path="res://CharacterNavigation.gd" type="Script" id=1]
 [ext_resource path="res://materials/grey.tres" type="Material" id=2]
 [ext_resource path="res://stairs.tscn" type="PackedScene" id=3]
-[ext_resource path="res://characters/simple_man.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Waypoint.tscn" type="PackedScene" id=5]
-[ext_resource path="res://materials/red.material" type="Material" id=6]
+[ext_resource path="res://Waypoint.tscn" type="PackedScene" id=4]
+[ext_resource path="res://characters/Character.tscn" type="PackedScene" id=5]
+[ext_resource path="res://characters/CharacterPlayer.gd" type="Script" id=6]
+[ext_resource path="res://materials/green.material" type="Material" id=7]
+[ext_resource path="res://characters/CharacterAI.gd" type="Script" id=8]
+[ext_resource path="res://materials/red.material" type="Material" id=9]
 
 [sub_resource type="NavigationMesh" id=1]
 vertices = PoolVector3Array( 9, 0.42513, 1.9, 9, 0.42513, -1.5, 8.4, 0.42513, -1.5, 9, 0.42513, 1.9, 8.4, 0.42513, -1.5, 7.9, 0.42513, -2, 3.4, 0.42513, 2.2, 4.5, 0.42513, 2.3, 8.4, 0.42513, -12.8, 9, 0.42513, -12.8, 8.9, 0.42513, -16.9, 7.9, 0.42513, -12.3, 8.4, 0.42513, -12.8, 8.9, 0.42513, -16.9, -2.1, 0.42513, -16.9, -2.1, 0.42513, -16.9, -13.1, 0.42513, -16.9, -12.6, 0.42513, -16.4, -6, 0.42513, -3.6, -3.5, 0.42513, -1.9, 3.4, 0.42513, 2.2, 7.9, 0.42513, -2, 7.9, 0.42513, -12.3, -2.1, 0.42513, -16.9, -12.7, 0.42513, -6, -6.9, 0.42513, -3.7, -6.4, 0.42513, -3.8, -2.1, 0.42513, -16.9, -12.6, 0.42513, -16.4, -3.4, 0.42513, -1.3, -4.4, 0.42513, 0.300001, 0.4, 0.42513, 4.5, -3.5, 0.42513, -1.9, -3.4, 0.42513, -1.3, 0.4, 0.42513, 4.5, 3.4, 0.42513, 2.2, -2.1, 0.42513, -16.9, -6.4, 0.42513, -3.8, -6, 0.42513, -3.6, 9, 0.42513, -12.8, 11.1, 0.42513, -12.8, 11.2, 0.42513, -16.9, 8.9, 0.42513, -16.9, 11.2, 0.42513, -16.9, 11.1, 0.42513, -12.8, 11.9, 0.42513, -12.7, 11.2, 0.42513, -16.9, 11.9, 0.42513, -12.7, 12.2, 0.42513, -12.3, 16.9, 0.42513, -11.8, 16.9, 0.42513, -16.9, 12.2, 0.42513, -12.3, 12.2, 0.42513, -11.7, 16.9, 0.42513, -11.8, -15.7, 5.12513, -15.7, -15.7, 5.12513, -6.8, -13.8, 5.12513, -6.8, -13.8, 5.12513, -15.7, -15.6, 0.42513, -15.6, -15.6, 0.42513, -6.9, -13.9, 0.42513, -6.9, -13.9, 0.42513, -15.6, 12.2, 0.42513, -11.7, 12.2, 0.42513, -2.6, 16.9, 0.42513, -2.5, 16.9, 0.42513, -11.8, 9.1, 5.12513, -11.6, 9.1, 5.12513, -2.7, 11, 5.12513, -2.7, 11, 5.12513, -11.6, 9.2, 0.42513, -11.5, 9.2, 0.42513, -2.8, 10.9, 0.42513, -2.8, 10.9, 0.42513, -11.5, -16.9, 0.42513, 10.6, -15.7, 0.42513, 10.6, -15.5, 0.42513, 10, -16.4, 0.42513, -5.6, -16.9, 0.42513, -6.1, -16.9, 0.42513, 2.2, -16.9, 0.42513, 2.2, -16.9, 0.42513, 10.6, -15.5, 0.42513, 10, -11.9, 0.42513, 4.2, -13, 0.42513, -5.7, -16.4, 0.42513, -5.6, -16.9, 0.42513, 2.2, -11.9, 0.42513, 4.2, -8.3, 0.42513, -1.6, -7.2, 0.42513, -3.5, -6.9, 0.42513, -3.7, -12.7, 0.42513, -6, -13, 0.42513, -5.7, -8.3, 0.42513, -1.6, -7.2, 0.42513, -3.5, -12.7, 0.42513, -6, 9, 0.42513, -1.5, 9, 0.42513, 1.9, 9.9, 0.42513, 2, 11.7, 0.42513, -1.5, 16.9, 0.42513, -2.5, 12.2, 0.42513, -2.6, 12.2, 0.42513, -2, 11.7, 0.42513, -1.5, 9.9, 0.42513, 2, 10.1, 0.52513, 2.5, 16.9, 0.42513, 2.5, 16.9, 0.42513, -2.5, 12.2, 0.42513, -2, -11, 0.42513, 5.2, -10.8, 0.42513, 5.6, -9.5, 0.42513, 6.2, -5.2, 0.42513, -0.799999, -6.7, 0.42513, -1.8, -7.3, 3.92513, 2.8, -6.7, 4.22513, 2.8, -6.2, 4.32513, 2, -6.4, 4.52513, 1.3, -5.5, 5.02513, -0.299999, -6.9, 5.02513, -1.2, -7.3, 4.92513, -1.1, -9, 3.92513, 1.8, -7.3, 3.92513, 2.8, -6.4, 4.52513, 1.3, -0.1, 0.42513, 5, 0.4, 0.42513, 4.5, -4.4, 0.42513, 0.300001, -7, 0.42513, 4.6, -12.8, 0.82513, 11.7, -7.3, 3.92513, 2.8, -9, 3.92513, 1.8, -14.6, 0.72513, 11, -6.2, 4.32513, 2, -6.7, 4.22513, 2.8, -6.4, 4.12513, 3.1, -5.1, 4.12513, 2, 5.2, 2.42513, 5.3, 5.2, 2.42513, 4.4, 4.6, 2.72513, 4.2, 3.8, 2.62513, 5.4, 4.26667, 2.52513, 5.36667, 4.73333, 2.62513, 5.33333, 3.8, 2.62513, 5.4, 4.6, 2.72513, 4.2, 4.5, 2.82513, 3.5, -5.1, 4.12513, 2, -6.4, 4.12513, 3.1, -6.4, 4.02513, 3.8, 9, 0.92513, 3.1, 9.1, 0.92513, 5, 9.9, 0.625131, 5, 9.9, 0.625131, 3, 9.9, 0.625131, 3, 10.2, 0.52513, 5.2, 10.3, 0.42513, 5.6, 16.9, 0.42513, 5.6, 16.9, 0.42513, 2.5, 10.1, 0.52513, 2.5, 10.69, 0.42513, 3.49, 9.9, 0.625131, 3, 9.9, 0.625131, 5, 10.2, 0.52513, 5.2, 6, 2.12513, 3.3, 5.7, 2.22513, 3.6, 5.6, 2.22513, 4.2, 5.6, 2.22513, 4.2, 5.2, 2.42513, 4.4, 5.2, 2.42513, 5.3, 6, 2.12513, 3.3, 5.6, 2.22513, 4.2, 5.2, 2.42513, 5.3, 9.1, 0.92513, 5, 9, 0.92513, 3.1, -11.9, 0.42513, 12.6, -12.4, 0.42513, 12.9, -12.4, 0.42513, 16.9, -5.5, 0.42513, 16.9, -0.199999, 0.42513, 5.5, -0.1, 0.42513, 5, -7, 0.42513, 4.6, 0.1, 0.42513, 5.9, -0.199999, 0.42513, 5.5, -7, 0.42513, 4.6, 1.7, 0.42513, 6.2, 0.1, 0.42513, 5.9, -7, 0.42513, 4.6, -11.9, 0.42513, 12.6, -5.5, 0.42513, 16.9, 1.5, 0.42513, 16.9, 1.6, 0.625131, 11.55, 1.65556, 0.625131, 8.57778, 0.508757, 0.42513, 11.3, 16.9, 0.42513, 5.6, 10.3, 0.42513, 5.6, 10.1, 0.42513, 6.1, 16.9, 0.42513, 5.6, 10.1, 0.42513, 6.1, 9.3, 0.42513, 6.2, 9.4, 0.42513, 16.9, 16.9, 0.42513, 16.9, 9.31111, 0.42513, 7.38889, 9.32778, 0.92513, 9.17222, 9.37222, 0.92513, 13.9278, 9.38889, 0.42513, 15.7111, 11.2944, 0.42513, 11.308, 10.0967, 0.82513, 14.3009, 11.2987, 0.42513, 14.898, 10.0902, 0.82513, 8.9058, 11.3042, 0.42513, 8.30624, 10.6907, 0.52513, 14.3053, 10.1026, 0.82513, 13.6925, 10.1021, 0.52513, 7.70911, 10.1048, 0.52513, 15.4976, 1.5, 0.42513, 16.9, 3.9, 0.42513, 16.9, 4, 0.42513, 6.6, 1.7, 0.42513, 6.2, 1.65556, 0.625131, 8.57778, 1.6, 0.625131, 11.55, 3.91111, 0.42513, 15.7556, 3.92778, 1.02513, 14.0389, 3.97222, 1.02513, 9.46111, 3.98333, 0.625131, 8.31667, 2.90012, 0.92513, 14.2999, 2.30214, 0.52513, 15.4931, 2.30612, 0.82513, 14.2955, 2.90804, 0.92513, 8.90077, 2.90003, 0.625131, 8.29198, 5.4, 0.42513, 6.5, 5.4, 0.42513, 16.9, 9.4, 0.42513, 16.9, 9.3, 0.42513, 6.2, 5.4, 0.625131, 8.23333, 5.4, 1.02513, 9.38889, 5.4, 1.02513, 14.0111, 5.4, 0.42513, 15.7444, 9.38889, 0.42513, 15.7111, 9.37222, 0.92513, 13.9278, 9.32778, 0.92513, 9.17222, 9.31111, 0.42513, 7.38889, 5.4, 0.42513, 16.9, 5.4, 0.42513, 6.5, 4.8, 0.42513, 6.7, 4.86667, 0.52513, 7.83333, 4.9, 0.82513, 8.4, 4.96667, 1.02513, 9.53333, 5.23333, 1.02513, 14.0667, 5.33333, 0.42513, 15.7667, 5.4, 0.42513, 15.7444, 5.4, 1.02513, 14.0111, 5.4, 1.02513, 9.38889, 5.4, 0.625131, 8.23333, 3.9, 0.42513, 16.9, 5.4, 0.42513, 16.9, 4.8, 0.42513, 6.7, 4, 0.42513, 6.6, 3.98333, 0.625131, 8.31667, 3.97222, 1.02513, 9.46111, 3.92778, 1.02513, 14.0389, 3.91111, 0.42513, 15.7556, 5.33333, 0.42513, 15.7667, 5.23333, 1.02513, 14.0667, 4.96667, 1.02513, 9.53333, 4.9, 0.82513, 8.4, 4.86667, 0.52513, 7.83333, 4.69, 0.625131, 14.89, -15.6, 0.42513, 11, -15.7, 0.42513, 10.6, -16.9, 0.42513, 10.6, -15.3, 0.52513, 11.2, -15.6, 0.42513, 11, -16.9, 0.42513, 10.6, -13, 0.625131, 12.5, -12.8, 0.82513, 11.7, -14.6, 0.72513, 11, -12.8, 0.52513, 12.8, -13, 0.625131, 12.5, -14.6, 0.72513, 11, -15.3, 0.52513, 11.2, -12.8, 0.52513, 12.8, -15.3, 0.52513, 11.2, -16.9, 0.42513, 10.6, -16.9, 0.42513, 16.9, -12.4, 0.42513, 16.9, -12.4, 0.42513, 16.9, -12.4, 0.42513, 12.9, -12.8, 0.52513, 12.8 )
@@ -44,23 +47,17 @@ size = Vector3( 12, 0.5, 3 )
 [sub_resource type="ConvexPolygonShape" id=11]
 points = PoolVector3Array( -5.5, 0.25, 1.5, 5.5, 0.25, -1.5, 5.5, 0.25, 1.5, -5.5, 0.25, -1.5, -5.5, -0.25, 1.5, 5.5, -0.25, -1.5, 5.5, -0.25, 1.5, -5.5, -0.25, -1.5, 5.5, 0.25, 1.5, -5.5, 0.25, -1.5, 5.5, 0.25, -1.5, -5.5, 0.25, 1.5, 5.5, -0.25, 1.5, -5.5, -0.25, -1.5, 5.5, -0.25, -1.5, -5.5, -0.25, 1.5, 5.5, 0.25, 1.5, -5.5, -0.25, 1.5, -5.5, 0.25, 1.5, 5.5, -0.25, 1.5, 5.5, 0.25, -1.5, -5.5, -0.25, -1.5, -5.5, 0.25, -1.5, 5.5, -0.25, -1.5 )
 
-[sub_resource type="SpatialMaterial" id=12]
-albedo_color = Color( 0, 0, 0, 1 )
-metallic = 1.0
-metallic_specular = 1.0
-roughness = 0.0
-
-[sub_resource type="BoxShape" id=13]
+[sub_resource type="BoxShape" id=12]
 extents = Vector3( 0.25, 0.25, 0.25 )
 
-[sub_resource type="CubeMesh" id=14]
+[sub_resource type="CubeMesh" id=13]
 size = Vector3( 0.5, 0.5, 0.5 )
 
-[sub_resource type="ProceduralSky" id=15]
+[sub_resource type="ProceduralSky" id=14]
 
-[sub_resource type="Environment" id=16]
+[sub_resource type="Environment" id=15]
 background_mode = 2
-background_sky = SubResource( 15 )
+background_sky = SubResource( 14 )
 
 [node name="Level" type="Navigation"]
 script = ExtResource( 1 )
@@ -137,10 +134,6 @@ shape = SubResource( 11 )
 transform = Transform( 0.926185, -0.250347, 0.281972, 0, 0.747797, 0.663927, -0.37707, -0.614919, 0.692599, 9.4957, 16.4026, 23.9844 )
 fov = 48.7
 
-[node name="Player" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2715, 0.565412, -1.16909 )
-body_material = SubResource( 12 )
-
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( -0.556191, -0.113599, -0.823254, -0.483509, 0.849929, 0.209379, 0.675922, 0.514506, -0.527649, 0, 3.22489, 0 )
 shadow_enabled = true
@@ -152,10 +145,10 @@ editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.1252, 3.10171, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
-shape = SubResource( 13 )
+shape = SubResource( 12 )
 
 [node name="MeshInstance" type="MeshInstance" parent="RigidBody"]
-mesh = SubResource( 14 )
+mesh = SubResource( 13 )
 material/0 = null
 
 [node name="RigidBody2" type="RigidBody" parent="."]
@@ -163,10 +156,10 @@ editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.961, 3.10171, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="RigidBody2"]
-shape = SubResource( 13 )
+shape = SubResource( 12 )
 
 [node name="MeshInstance" type="MeshInstance" parent="RigidBody2"]
-mesh = SubResource( 14 )
+mesh = SubResource( 13 )
 material/0 = null
 
 [node name="RigidBody3" type="RigidBody" parent="."]
@@ -174,10 +167,10 @@ editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.8423, 3.10171, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="RigidBody3"]
-shape = SubResource( 13 )
+shape = SubResource( 12 )
 
 [node name="MeshInstance" type="MeshInstance" parent="RigidBody3"]
-mesh = SubResource( 14 )
+mesh = SubResource( 13 )
 material/0 = null
 
 [node name="RigidBody4" type="RigidBody" parent="."]
@@ -185,10 +178,10 @@ editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.3896, 3.10171, 1.40839 )
 
 [node name="CollisionShape" type="CollisionShape" parent="RigidBody4"]
-shape = SubResource( 13 )
+shape = SubResource( 12 )
 
 [node name="MeshInstance" type="MeshInstance" parent="RigidBody4"]
-mesh = SubResource( 14 )
+mesh = SubResource( 13 )
 material/0 = null
 
 [node name="RigidBody5" type="RigidBody" parent="."]
@@ -196,10 +189,10 @@ editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.9615, 3.10171, 1.44664 )
 
 [node name="CollisionShape" type="CollisionShape" parent="RigidBody5"]
-shape = SubResource( 13 )
+shape = SubResource( 12 )
 
 [node name="MeshInstance" type="MeshInstance" parent="RigidBody5"]
-mesh = SubResource( 14 )
+mesh = SubResource( 13 )
 material/0 = null
 
 [node name="RigidBody6" type="RigidBody" parent="."]
@@ -207,619 +200,115 @@ editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2502, 3.10171, 2.76076 )
 
 [node name="CollisionShape" type="CollisionShape" parent="RigidBody6"]
-shape = SubResource( 13 )
+shape = SubResource( 12 )
 
 [node name="MeshInstance" type="MeshInstance" parent="RigidBody6"]
-mesh = SubResource( 14 )
+mesh = SubResource( 13 )
 material/0 = null
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 16 )
+environment = SubResource( 15 )
 
 [node name="Waypoints" type="Spatial" parent="."]
 
-[node name="Waypoint" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint" parent="Waypoints" instance=ExtResource( 4 )]
 
-[node name="Waypoint2" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint2" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.00643, 0.996475, -6.48901 )
 
-[node name="Waypoint3" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint3" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.88513, 0.996475, -13.3264 )
 
-[node name="Waypoint4" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint4" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.6019, 0.996475, -10.279 )
 
-[node name="Waypoint5" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint5" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.37357, 0.996475, -0.201748 )
 
-[node name="Waypoint6" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint6" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.6781, 0.996475, 7.08895 )
 
-[node name="Waypoint12" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint12" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.1742, 0.996475, 4.35876 )
 
-[node name="Waypoint23" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint23" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.02349, 0.996475, -3.70944 )
 
-[node name="Waypoint24" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint24" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0205, 0.996475, -2.47816 )
 
-[node name="Waypoint25" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint25" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.56096, 0.996475, 13.467 )
 
-[node name="Waypoint26" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint26" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.3618, 0.996475, 14.7437 )
 
-[node name="Waypoint27" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint27" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.6382, 0.996475, -15.2563 )
 
-[node name="Waypoint28" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint28" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.67769, 0.996475, -1.27554 )
 
-[node name="Waypoint21" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint21" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.3463, 0.996475, -3.48036 )
 
-[node name="Waypoint22" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint22" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.3463, 0.996475, -3.48036 )
 
-[node name="Waypoint7" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint7" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06773, 1.93998, 10.4758 )
 
-[node name="Waypoint29" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint29" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.29922, 1.93998, 13.1461 )
 
-[node name="Waypoint8" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint8" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18858, 0.996475, 14.3246 )
 
-[node name="Waypoint9" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint9" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.0122, 0.996477, 8.82552 )
 
-[node name="Waypoint10" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint10" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.1295, 0.996475, 12.9007 )
 
-[node name="Waypoint17" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint17" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.89502, 4.47029, 1.23606 )
 
-[node name="Waypoint18" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint18" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.55207, 2.41971, 4.25895 )
 
-[node name="Waypoint20" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint20" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.159506, 4.16502, 3.54698 )
 
-[node name="Waypoint19" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint19" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37509, 1.31181, 3.8332 )
 
-[node name="Waypoint11" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint11" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.2608, 0.996473, 3.2464 )
 
-[node name="Waypoint13" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint13" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.99979, 0.996471, -13.4916 )
 
-[node name="Waypoint14" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint14" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.95682, 0.996473, -11.3083 )
 
-[node name="Waypoint15" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint15" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.92993, 0.996473, -6.46412 )
 
-[node name="Waypoint16" parent="Waypoints" instance=ExtResource( 5 )]
+[node name="Waypoint16" parent="Waypoints" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8726, 0.996475, 12.1261 )
 
-[node name="AI_GROUP" type="Spatial" parent="."]
-
-[node name="AI" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.44539, 0.565412, -1.16909 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI4" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15466, 0.565412, 13.2531 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI2" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.65023, 0.565412, -1.16909 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI6" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.359497, 0.565412, 13.2531 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI59" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.65023, 0.565412, -6.29581 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI60" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.359497, 0.565412, 8.12639 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI78" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.65023, 0.565412, -8.70953 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI79" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.359497, 0.565412, 5.71267 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI3" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.58415, 0.565412, -1.16909 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI5" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.706583, 0.565412, 13.2531 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI30" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.58415, 0.565412, -3.40213 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI32" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.706583, 0.565412, 11.0201 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI51" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.58415, 0.565412, -5.29619 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI52" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.706583, 0.565412, 9.12601 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI80" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.58415, 0.565412, -8.70953 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI81" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.706583, 0.565412, 5.71267 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI20" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.89028, 0.565412, -2.18884 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI21" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.40045, 0.565412, 12.2334 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI41" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.89028, 0.565412, -4.42348 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI43" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.40045, 0.565412, 9.99872 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI48" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.89028, 0.565412, -5.29619 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI49" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.40045, 0.565412, 9.12601 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI63" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.89028, 0.565412, -6.29581 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI64" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.40045, 0.565412, 8.12639 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI82" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.89028, 0.565412, -8.70953 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI83" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.40045, 0.565412, 5.71267 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI27" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.72243, 0.565412, -2.18884 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI34" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5683, 0.565412, 12.2334 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI45" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.72243, 0.565412, -4.42348 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI46" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5683, 0.565412, 9.99872 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI62" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.72243, 0.565412, -6.29581 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI65" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5683, 0.565412, 8.12639 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI90" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.72243, 0.565412, -9.70332 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI91" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5683, 0.565412, 4.71888 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI23" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.49352, 0.565412, -2.18884 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI24" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79721, 0.565412, 12.2334 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI35" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.49352, 0.565412, -3.40213 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI36" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79721, 0.565412, 11.0201 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI7" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37812, 0.565412, -1.16909 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI8" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.91261, 0.565412, 13.2531 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI28" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37812, 0.565412, -2.18884 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI37" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.91261, 0.565412, 12.2334 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI40" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37812, 0.565412, -4.42348 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI42" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.91261, 0.565412, 9.99872 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI58" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37812, 0.565412, -6.29581 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI68" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.91261, 0.565412, 8.12639 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI70" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37812, 0.565412, -7.49333 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI71" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.91261, 0.565412, 6.92887 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI13" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.211041, 0.565412, -0.149427 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI14" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07969, 0.565412, 14.2728 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI31" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.211041, 0.565412, -3.40213 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI44" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07969, 0.565412, 11.0201 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI73" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.211041, 0.565412, -7.49333 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI84" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07969, 0.565412, 6.92887 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI74" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.211041, 0.565412, -8.70953 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI77" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07969, 0.565412, 5.71267 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI9" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.802598, 0.565412, -1.16909 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI11" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.09333, 0.565412, 13.2531 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI29" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.802598, 0.565412, -3.40213 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI38" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.09333, 0.565412, 11.0201 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI57" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.802598, 0.565412, -6.29581 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI72" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.09333, 0.565412, 8.12639 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI67" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.802598, 0.565412, -7.49333 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI75" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.09333, 0.565412, 6.92887 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI10" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75616, 0.565412, -1.16909 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI12" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.04689, 0.565412, 13.2531 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI19" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75616, 0.565412, -0.149427 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI22" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.04689, 0.565412, 14.2728 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI33" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75616, 0.565412, -3.40213 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI39" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.04689, 0.565412, 11.0201 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI61" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75616, 0.565412, -6.29581 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI69" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.04689, 0.565412, 8.12639 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI66" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75616, 0.565412, -7.49333 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
-
-[node name="AI76" parent="AI_GROUP" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.04689, 0.565412, 6.92887 )
-is_ai = true
-body_material = ExtResource( 6 )
-waypoints = [ NodePath("Waypoint"), NodePath("Waypoint2"), NodePath("Waypoint3"), NodePath("Waypoint4"), NodePath("Waypoint5"), NodePath("Waypoint6"), NodePath("Waypoint7"), NodePath("Waypoint8"), NodePath("Waypoint8"), NodePath("Waypoint9"), NodePath("Waypoint10"), NodePath("Waypoint11"), NodePath("Waypoint12"), NodePath("Waypoint13"), NodePath("Waypoint14"), NodePath("Waypoint15"), NodePath("Waypoint16"), NodePath("Waypoint17"), NodePath("Waypoint18"), NodePath("Waypoint19"), NodePath("Waypoint21"), NodePath("Waypoint22"), NodePath("Waypoint23"), NodePath("Waypoint24") ]
-draw_path = false
+[node name="Player" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6001, 0.250119, 0.864605 )
+script = ExtResource( 6 )
+locomotion_speed = 2.0
+
+[node name="AI_NPC1" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.81209, 0.250119, 0.864605 )
+script = ExtResource( 6 )
+body_material = ExtResource( 7 )
+
+[node name="AI_Enemy" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.7229, 0.250119, 0.864605 )
+script = ExtResource( 8 )
+body_material = ExtResource( 9 )
+waypoints = [ NodePath("../Waypoints/Waypoint"), NodePath("../Waypoints/Waypoint2") ]
