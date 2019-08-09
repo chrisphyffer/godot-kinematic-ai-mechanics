@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Character",
 "language": "GDScript",
 "path": "res://characters/simple_man.gd"
+}, {
+"base": "MeshInstance",
+"class": "Waypoint",
+"language": "GDScript",
+"path": "res://Waypoint.gd"
 } ]
 _global_script_class_icons={
-"Character": ""
+"Character": "",
+"Waypoint": ""
 }
 
 [application]

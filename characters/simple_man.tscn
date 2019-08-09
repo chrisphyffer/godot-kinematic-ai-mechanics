@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://characters/simple_man.gd" type="Script" id=1]
-[ext_resource path="res://characters/idle.anim" type="Animation" id=2]
-[ext_resource path="res://characters/run.anim" type="Animation" id=3]
-[ext_resource path="res://characters/walk.anim" type="Animation" id=4]
-[ext_resource path="res://characters/treeroot.tres" type="AnimationNodeBlendTree" id=5]
+[ext_resource path="res://characters/idle.anim" type="Animation" id=1]
+[ext_resource path="res://characters/run.anim" type="Animation" id=2]
+[ext_resource path="res://characters/walk.anim" type="Animation" id=3]
+[ext_resource path="res://characters/treeroot.tres" type="AnimationNodeBlendTree" id=4]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "Cube.001"
@@ -24,8 +23,13 @@ surfaces/0 = {
 radius = 0.47905
 height = 0.606641
 
+[sub_resource type="PrismMesh" id=3]
+size = Vector3( 0.2, 1, 0.2 )
+
+[sub_resource type="SphereShape" id=4]
+radius = 12.0
+
 [node name="SimpleMan" type="KinematicBody"]
-script = ExtResource( 1 )
 
 [node name="SimpleManSpatial" type="Spatial" parent="."]
 transform = Transform( -1, 0, -8.74228e-008, 0, 1, 0, 8.74228e-008, 0, -1, 0, 0, 0 )
@@ -370,21 +374,39 @@ mesh = SubResource( 1 )
 material/0 = null
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="SimpleManSpatial"]
-anims/Idle = ExtResource( 2 )
-anims/Run = ExtResource( 3 )
-anims/Walk = ExtResource( 4 )
+anims/Idle = ExtResource( 1 )
+anims/Run = ExtResource( 2 )
+anims/Walk = ExtResource( 3 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = ExtResource( 5 )
+tree_root = ExtResource( 4 )
 anim_player = NodePath("../SimpleManSpatial/AnimationPlayer")
 active = true
 process_mode = 0
 root_motion_track = NodePath("Armature/Skeleton:Root")
 parameters/Locomotion/blend_position = 0.0
+parameters/LocomotionTimeScale/scale = 1.0
 
 [node name="RootMotionView" type="RootMotionView" parent="."]
+visible = false
 animation_path = NodePath("../AnimationTree")
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0.825246, 0 )
 shape = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 1.03, 0.924559 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="AreaOfAwareness" type="Area" parent="."]
+monitoring = false
+monitorable = false
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape" type="CollisionShape" parent="AreaOfAwareness"]
+shape = SubResource( 4 )
+[connection signal="area_entered" from="AreaOfAwareness" to="." method="_object_entered_area_of_awareness"]
+[connection signal="area_exited" from="AreaOfAwareness" to="." method="_object_exited_area_of_awareness"]

@@ -1,0 +1,84 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://materials/grey.tres" type="Material" id=1]
+
+
+[sub_resource type="CubeMesh" id=1]
+material = ExtResource( 1 )
+size = Vector3( 20, 1, 20 )
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 18, 1, 18 )
+
+[sub_resource type="ConvexPolygonShape" id=6]
+points = PoolVector3Array( -9, 0.5, 9, 9, 0.5, -9, 9, 0.5, 9, -9, 0.5, -9, -9, -0.5, 9, 9, -0.5, -9, 9, -0.5, 9, -9, -0.5, -9, 9, 0.5, 9, -9, 0.5, -9, 9, 0.5, -9, -9, 0.5, 9, 9, -0.5, 9, -9, -0.5, -9, 9, -0.5, -9, -9, -0.5, 9, 9, 0.5, 9, -9, -0.5, 9, -9, 0.5, 9, 9, -0.5, 9, 9, 0.5, -9, -9, -0.5, -9, -9, 0.5, -9, 9, -0.5, -9 )
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 16, 1, 16 )
+
+[sub_resource type="ConvexPolygonShape" id=7]
+points = PoolVector3Array( -8, 0.5, 8, 8, 0.5, -8, 8, 0.5, 8, -8, 0.5, -8, -8, -0.5, 8, 8, -0.5, -8, 8, -0.5, 8, -8, -0.5, -8, 8, 0.5, 8, -8, 0.5, -8, 8, 0.5, -8, -8, 0.5, 8, 8, -0.5, 8, -8, -0.5, -8, 8, -0.5, -8, -8, -0.5, 8, 8, 0.5, 8, -8, -0.5, 8, -8, 0.5, 8, 8, -0.5, 8, 8, 0.5, -8, -8, -0.5, -8, -8, 0.5, -8, 8, -0.5, -8 )
+
+[sub_resource type="CubeMesh" id=4]
+size = Vector3( 14, 1, 14 )
+
+[sub_resource type="ConvexPolygonShape" id=8]
+points = PoolVector3Array( -7, 0.5, 7, 7, 0.5, -7, 7, 0.5, 7, -7, 0.5, -7, -7, -0.5, 7, 7, -0.5, -7, 7, -0.5, 7, -7, -0.5, -7, 7, 0.5, 7, -7, 0.5, -7, 7, 0.5, -7, -7, 0.5, 7, 7, -0.5, 7, -7, -0.5, -7, 7, -0.5, -7, -7, -0.5, 7, 7, 0.5, 7, -7, -0.5, 7, -7, 0.5, 7, 7, -0.5, 7, 7, 0.5, -7, -7, -0.5, -7, -7, 0.5, -7, 7, -0.5, -7 )
+
+[sub_resource type="CubeMesh" id=5]
+size = Vector3( 12, 1, 12 )
+
+[sub_resource type="ConvexPolygonShape" id=9]
+points = PoolVector3Array( -6, 0.5, 6, 6, 0.5, -6, 6, 0.5, 6, -6, 0.5, -6, -6, -0.5, 6, 6, -0.5, -6, 6, -0.5, 6, -6, -0.5, -6, 6, 0.5, 6, -6, 0.5, -6, 6, 0.5, -6, -6, 0.5, 6, 6, -0.5, 6, -6, -0.5, -6, 6, -0.5, -6, -6, -0.5, 6, 6, 0.5, 6, -6, -0.5, 6, -6, 0.5, 6, 6, -0.5, 6, 6, 0.5, -6, -6, -0.5, -6, -6, 0.5, -6, 6, -0.5, -6 )
+
+[sub_resource type="ConvexPolygonShape" id=10]
+points = PoolVector3Array( -10, 0.5, 10, 10, 0.5, -10, 10, 0.5, 10, -10, 0.5, -10, -10, -0.5, 10, 10, -0.5, -10, 10, -0.5, 10, -10, -0.5, -10, 10, 0.5, 10, -10, 0.5, -10, 10, 0.5, -10, -10, 0.5, 10, 10, -0.5, 10, -10, -0.5, -10, 10, -0.5, -10, -10, -0.5, 10, 10, 0.5, 10, -10, -0.5, 10, -10, 0.5, 10, 10, -0.5, 10, 10, 0.5, -10, -10, -0.5, -10, -10, 0.5, -10, 10, -0.5, -10 )
+
+[node name="Stairs" type="MeshInstance"]
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.321463, 0 )
+mesh = SubResource( 2 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="MeshInstance"]
+
+[node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.608227, 0 )
+mesh = SubResource( 3 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="MeshInstance2"]
+
+[node name="CollisionShape" type="CollisionShape" parent="MeshInstance2/StaticBody"]
+shape = SubResource( 7 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.908545, 0 )
+mesh = SubResource( 4 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="MeshInstance3"]
+
+[node name="CollisionShape" type="CollisionShape" parent="MeshInstance3/StaticBody"]
+shape = SubResource( 8 )
+
+[node name="MeshInstance4" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10598, 0 )
+mesh = SubResource( 5 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="MeshInstance4"]
+
+[node name="CollisionShape" type="CollisionShape" parent="MeshInstance4/StaticBody"]
+shape = SubResource( 9 )
+
+[node name="StaticBody" type="StaticBody" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+shape = SubResource( 10 )

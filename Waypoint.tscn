@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://materials/red.material" type="Material" id=1]
+[ext_resource path="res://Waypoint.gd" type="Script" id=2]
+
+
+[sub_resource type="CapsuleMesh" id=1]
+radius = 0.3
+mid_height = 0.5
+radial_segments = 8
+
+[sub_resource type="BoxShape" id=2]
+
+[node name="Waypoint" type="MeshInstance" groups=[
+"Waypoint",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.996475, 9.763 )
+visible = false
+layers = 4
+mesh = SubResource( 1 )
+material/0 = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Area" type="Area" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+shape = SubResource( 2 )
