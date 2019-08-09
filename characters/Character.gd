@@ -188,34 +188,6 @@ func _check_vision(delta):
 	if not process_vision:
 		return
 
-	#Scan for waypoints behind this character.
-	if find_nearest_waypoint_behind:
-		#print('Character stuck, finding nearest waypoint away from my facing direction')
-		$AreaOfAwareness.monitoring = true
-		for i in range(0, bodies_in_awareness.size()-1):
-			if bodies_in_awareness[i].get_owner().is_in_group('Waypoint'):
-				var target_waypoint = bodies_in_awareness[i]
-				get_navigation_path(target_waypoint.get_translation())
-				find_nearest_waypoint_behind = false
-				$AreaOfAwareness.monitoring = false
-				#print('YAS')
-
-				#var AP = (target_waypoint.get_transform().origin - transform.origin).normalized()
-				#if AP.dot(transform.basis.x) >= 0:
-				#	print('SEEING WAYPOINT.')
-				#	navLevel.generate_path(self, target_waypoint)
-				#	find_nearest_waypoint_behind = false
-				#	break
-
-		#if find_nearest_waypoint_behind:
-			#var waypoint = grab_random_waypoint()
-			#if waypoint:
-			#	generate_path(waypoint)
-			#find_nearest_waypoint_behind = false
-			#$AreaOfAwareness.monitoring = false
-
-	pass
-
 var bodies_in_awareness = []
 func _object_entered_area_of_awareness(body):
 	bodies_in_awareness.append(body)
