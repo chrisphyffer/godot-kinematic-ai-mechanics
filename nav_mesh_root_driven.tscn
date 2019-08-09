@@ -1,6 +1,6 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
-[ext_resource path="res://CharacterNavigation.gd" type="Script" id=1]
+[ext_resource path="res://NavigationManager.gd" type="Script" id=1]
 [ext_resource path="res://materials/grey.tres" type="Material" id=2]
 [ext_resource path="res://stairs.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Waypoint.tscn" type="PackedScene" id=4]
@@ -58,6 +58,10 @@ size = Vector3( 0.5, 0.5, 0.5 )
 [sub_resource type="Environment" id=15]
 background_mode = 2
 background_sky = SubResource( 14 )
+
+[sub_resource type="SpatialMaterial" id=16]
+albedo_color = Color( 0, 0, 0, 1 )
+roughness = 0.0
 
 [node name="Level" type="Navigation"]
 script = ExtResource( 1 )
@@ -300,15 +304,19 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8726, 0.996475, 12.1261 )
 [node name="Player" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6001, 0.250119, 0.864605 )
 script = ExtResource( 6 )
+body_material = SubResource( 16 )
 locomotion_speed = 2.0
+navigation_draw_color = Color( 0, 0, 0, 1 )
 
 [node name="AI_NPC1" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.81209, 0.250119, 0.864605 )
 script = ExtResource( 6 )
 body_material = ExtResource( 7 )
+navigation_draw_color = Color( 0, 0.439216, 0.0901961, 1 )
 
 [node name="AI_Enemy" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.7229, 0.250119, 0.864605 )
 script = ExtResource( 8 )
 body_material = ExtResource( 9 )
+navigation_draw_color = Color( 1, 0, 0, 1 )
 waypoints = [ NodePath("../Waypoints/Waypoint"), NodePath("../Waypoints/Waypoint2") ]

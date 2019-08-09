@@ -20,9 +20,9 @@ func _input(event):
 		var to = from + camera.project_ray_normal(event.position)*100
 		var end = navLevel.get_closest_point_to_segment(from, to)
 		
-		var _paths = navLevel.generate_path(self, end)
+		var _paths = get_navigation_path( end )
 		if typeof(_paths) == TYPE_ARRAY:
-			paths = _paths
+			navigation_path = _paths
 		else:
 			print('Cannot Generate Paths from Input')
 			

@@ -6,7 +6,7 @@ extends KinematicBody
 
 class_name Character
 
-var paths = []
+
 var accumulated_rotation = 0
 var arrived_at_position = false
 var rotated_to_position = false
@@ -20,7 +20,7 @@ export(Material) var body_material setget set_body_material
 
 var navLevel
 
-export(bool) var draw_path = true
+
 export(bool) var teleport_on_fail = false
 
 const PATH_FAIL_MAX = 3
@@ -44,8 +44,16 @@ export var locomotion_speed:float = 1
 
 
 #############
-# Draw Style
-export var draw_color:Color = Color(1, 1, 1, 1)
+# Navigation
+
+# Debug Path Draw
+var draw_path_node:ImmediateGeometry
+export(bool) var debug_draw_path = true
+export var navigation_draw_color:Color = Color(1, 1, 1, 1)
+
+var navigation_path:Array = []
+
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -59,33 +67,33 @@ func set_body_material(mat: Material):
 
 var process_movement : bool = true
 func _process_movement(delta):
-	
+
 	if not process_movement:
 		return
 
-	if typeof(paths) != TYPE_ARRAY:
+	if typeof(navigation_path) != TYPE_ARRAY:
 		$AnimationTree["parameters/Locomotion/blend_position"] = 0
 		return
 
-	if paths.empty():
+	if navigation_path.empty():
 		$AnimationTree["parameters/Locomotion/blend_position"] = 0
 		return
-		
+
 	$AnimationTree["parameters/Locomotion/blend_position"] = locomotion_speed
 	$AnimationTree["parameters/LocomotionTimeScale/scale"] = 1
 
-	if global_transform.origin.distance_to(paths[0]) < ACCEPTABLE_PATH_DISTANCE:
+	if global_transform.origin.distance_to(navigation_path[0]) < ACCEPTABLE_PATH_DISTANCE:
 		accumulated_rotation = 0
-		paths.remove(0)
+		navigation_path.remove(0)
 
-		if paths.empty():
-			navLevel.path_completed(self)
+		if navigation_path.empty():
+			do_debug_draw_path(true)
 			return
 
 	var t = transform
-	paths[0].y = t.origin.y
+	navigation_path[0].y = t.origin.y
 
-	var rotTransform = t.looking_at(paths[0], Vector3(0,1,0))
+	var rotTransform = t.looking_at(navigation_path[0], Vector3(0,1,0))
 	var thisRotation = Quat(t.basis).slerp( rotTransform.basis, clamp(accumulated_rotation, 0, 1) )
 
 	accumulated_rotation += delta
@@ -117,15 +125,57 @@ func _process_movement(delta):
 func _physics_process(delta):
 	_process_movement(delta)
 	_check_vision(delta)
+	
+func do_debug_draw_path(clear_draw_path_only:bool = false):
+	if debug_draw_path:
+		
+		if clear_draw_path_only:
+			draw_path_node.clear()
+			return
+		
+		if draw_path_node:
+			draw_path_node.clear()
+		else:
+			draw_path_node = ImmediateGeometry.new()
+			get_tree().get_root().add_child(draw_path_node)
 
-func generate_paths(destination: Vector3):
-	paths = navLevel.generate_path(self, destination)
-	if paths and not paths.empty():
-		return true
+		var _m = SpatialMaterial.new()
+		_m.albedo_color = navigation_draw_color
+		_m.flags_unshaded = true
+		_m.flags_use_point_size = true
 
-	path_fail = true
-	print('Path Fail')
-	return false
+		draw_path_node.set_material_override(_m)
+		draw_path_node.clear()
+		draw_path_node.begin(Mesh.PRIMITIVE_POINTS, null)
+
+		draw_path_node.add_vertex(Vector3(navigation_path[0].x, navigation_path[0].y, navigation_path[0].z ) )
+		draw_path_node.add_vertex(Vector3(navigation_path[navigation_path.size()-1].x, navigation_path[navigation_path.size()-1].y, navigation_path[navigation_path.size()-1].z ) )
+		draw_path_node.end()
+
+		draw_path_node.begin(Mesh.PRIMITIVE_LINE_STRIP, null)
+		for x in navigation_path:
+			draw_path_node.add_vertex(x)
+		draw_path_node.end()
+
+		return draw_path_node
+
+
+func get_navigation_path(destination: Vector3):
+	navigation_path = navLevel.generate_path(self, destination)
+	
+	if not typeof(navigation_path) == TYPE_ARRAY:
+		path_fail = true
+
+	if navigation_path.empty():
+		path_fail = true
+
+	if path_fail:
+		return false
+
+	do_debug_draw_path()
+	return true
+
+
 
 
 var find_nearest_waypoint_behind = false
@@ -134,10 +184,10 @@ var find_nearest_waypoint_behind = false
 # CHECK VISION
 var process_vision : bool = true
 func _check_vision(delta):
-	
+
 	if not process_vision:
 		return
-	
+
 	#Scan for waypoints behind this character.
 	if find_nearest_waypoint_behind:
 		#print('Character stuck, finding nearest waypoint away from my facing direction')
@@ -145,7 +195,7 @@ func _check_vision(delta):
 		for i in range(0, bodies_in_awareness.size()-1):
 			if bodies_in_awareness[i].get_owner().is_in_group('Waypoint'):
 				var target_waypoint = bodies_in_awareness[i]
-				navLevel.generate_path(self, target_waypoint)
+				get_navigation_path(target_waypoint.get_translation())
 				find_nearest_waypoint_behind = false
 				$AreaOfAwareness.monitoring = false
 				#print('YAS')
@@ -156,11 +206,11 @@ func _check_vision(delta):
 				#	navLevel.generate_path(self, target_waypoint)
 				#	find_nearest_waypoint_behind = false
 				#	break
-		
+
 		#if find_nearest_waypoint_behind:
 			#var waypoint = grab_random_waypoint()
 			#if waypoint:
-			#	generate_paths(waypoint)
+			#	generate_path(waypoint)
 			#find_nearest_waypoint_behind = false
 			#$AreaOfAwareness.monitoring = false
 
