@@ -1,4 +1,3 @@
-
 extends Navigation
 
 # Member variables
@@ -20,20 +19,9 @@ func _ready():
 	if not player:
 		get_tree().quit()
 
-func _input(event):
-#	if (event extends InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed):
-	if (event.is_class("InputEventMouseButton") and event.button_index == BUTTON_LEFT and event.pressed):
-		var from = get_node("Camera").project_ray_origin(event.position)
-		var to = from + get_node("Camera").project_ray_normal(event.position)*100
-		var end = get_closest_point_to_segment(from, to)
-		
-		var paths = generate_path(player, end)
-		if typeof(paths) == TYPE_ARRAY:
-			player.set_path(paths)
-
 var character_queues = []
 
-func update_character_queue(requester, start_path: Vector3, end_path: Vector3, paths: Array = [], draw_node: bool = false):
+func update_character_queue(requester : Node, start_path: Vector3, end_path: Vector3, paths: Array = [], draw_node: bool = false):
 
 	var found_queue = null
 
@@ -50,17 +38,17 @@ func update_character_queue(requester, start_path: Vector3, end_path: Vector3, p
 			found_queue = i
 			break
 	
-	if found_queue:
+	if found_queue != null:
 		dictionary_form.draw_node = character_queues[found_queue].draw_node
 		character_queues[found_queue] = dictionary_form
 	else:
 		character_queues.append(dictionary_form)
 		found_queue = character_queues.size()-1
-		
+	
 	return found_queue
 	
 
-func generate_path(requester, destination : Vector3):
+func generate_path(requester : Node, destination : Vector3):
 	
 	var start_path = get_closest_point(requester.get_translation())
 	var end_path = get_closest_point(destination)
@@ -74,7 +62,7 @@ func generate_path(requester, destination : Vector3):
 	
 	if requester.draw_path:
 		character_queues[characterIndex].draw_node = do_draw_path(characterIndex)
-	
+		
 	if Array(p):
 		return Array(p)
 	else:
@@ -88,9 +76,9 @@ func path_completed(requester):
 			break
 
 	if found_queue != null:
-		var drawNode = character_queues[found_queue]['draw_node']
-		if drawNode:
-			drawNode.queue_free()
+		var wr = weakref(character_queues[found_queue]['draw_node'])
+		if wr.get_ref():
+			character_queues[found_queue]['draw_node'].queue_free()
 
 func do_draw_path(characterIndex):
 	
@@ -105,13 +93,18 @@ func do_draw_path(characterIndex):
 	if not character_queues[characterIndex].draw_node:
 		drawNode = ImmediateGeometry.new()
 		add_child(drawNode)
+		
 	else:
-		drawNode = character_queues[characterIndex].draw_node
-		#print('drawing new node for character: ', character_queues[characterIndex].name)
-	
+		var wr = weakref(character_queues[characterIndex].draw_node)
+		
+		if not wr.get_ref():
+			drawNode = ImmediateGeometry.new()
+			add_child(drawNode)
+		else:
+			drawNode = get_node(character_queues[characterIndex].draw_node.name)
+		
 	var paths = character_queues[characterIndex].paths
 		
-	
 	drawNode.set_material_override(m)
 	drawNode.clear()
 	drawNode.begin(Mesh.PRIMITIVE_POINTS, null)
