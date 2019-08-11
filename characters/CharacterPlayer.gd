@@ -23,8 +23,8 @@ func _input(event):
 		var _paths = get_navigation_path( end )
 		if typeof(_paths) == TYPE_ARRAY:
 			navigation_path = _paths
-		else:
-			print('Cannot Generate Paths from Input')
+		#else:
+			#print('Cannot Generate Paths from Input')
 			
 func _physics_process(delta):
 	pass

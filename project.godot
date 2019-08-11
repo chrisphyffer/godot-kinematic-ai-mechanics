@@ -39,7 +39,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Godot Mechanics"
-run/main_scene="res://nav_mesh_root_driven.tscn"
+run/main_scene="res://NavmeshKinematicRootDriven.tscn"
 config/icon="res://icon.png"
 
 [input]

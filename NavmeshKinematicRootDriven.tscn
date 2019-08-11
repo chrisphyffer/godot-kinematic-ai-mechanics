@@ -306,17 +306,20 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6001, 0.250119, 0.864605 )
 script = ExtResource( 6 )
 body_material = SubResource( 16 )
 locomotion_speed = 2.0
+navLevelPath = NodePath("..")
 navigation_draw_color = Color( 0, 0, 0, 1 )
 
 [node name="AI_NPC1" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.81209, 0.250119, 0.864605 )
 script = ExtResource( 6 )
 body_material = ExtResource( 7 )
+navLevelPath = NodePath("..")
 navigation_draw_color = Color( 0, 0.439216, 0.0901961, 1 )
 
 [node name="AI_Enemy" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.7229, 0.250119, 0.864605 )
 script = ExtResource( 8 )
 body_material = ExtResource( 9 )
+navLevelPath = NodePath("..")
 navigation_draw_color = Color( 1, 0, 0, 1 )
 waypoints = [ NodePath("../Waypoints/Waypoint"), NodePath("../Waypoints/Waypoint2") ]

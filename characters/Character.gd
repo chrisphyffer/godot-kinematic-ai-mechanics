@@ -18,7 +18,7 @@ export(Material) var body_material setget set_body_material
 
 
 
-var navLevel
+
 
 
 export(bool) var teleport_on_fail = false
@@ -45,6 +45,8 @@ export var locomotion_speed:float = 1
 
 #############
 # Navigation
+export(NodePath) var navLevelPath
+var navLevel
 
 # Debug Path Draw
 var draw_path_node:ImmediateGeometry
@@ -59,7 +61,7 @@ var navigation_path:Array = []
 func _ready():
 	orientation=global_transform
 	orientation.origin = Vector3()
-	navLevel = get_tree().get_root().find_node('Level', true, false)
+	navLevel = get_node(navLevelPath)
 
 func set_body_material(mat: Material):
 	find_node('SimpleManMesh').set_surface_material(0, mat)
@@ -125,14 +127,14 @@ func _process_movement(delta):
 func _physics_process(delta):
 	_process_movement(delta)
 	_check_vision(delta)
-	
+
 func do_debug_draw_path(clear_draw_path_only:bool = false):
 	if debug_draw_path:
-		
+
 		if clear_draw_path_only:
 			draw_path_node.clear()
 			return
-		
+
 		if draw_path_node:
 			draw_path_node.clear()
 		else:
@@ -162,7 +164,7 @@ func do_debug_draw_path(clear_draw_path_only:bool = false):
 
 func get_navigation_path(destination: Vector3):
 	navigation_path = navLevel.generate_path(self, destination)
-	
+
 	if not typeof(navigation_path) == TYPE_ARRAY:
 		path_fail = true
 

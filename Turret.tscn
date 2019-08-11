@@ -1,0 +1,61 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://materials/grey.tres" type="Material" id=1]
+[ext_resource path="res://characters/FieldOfView.gd" type="Script" id=2]
+
+[sub_resource type="CylinderMesh" id=1]
+material = ExtResource( 1 )
+top_radius = 0.25
+bottom_radius = 0.5
+height = 1.0
+
+[sub_resource type="CapsuleShape" id=2]
+radius = 0.5
+
+[sub_resource type="SphereShape" id=3]
+radius = 12.0
+
+[sub_resource type="CylinderMesh" id=4]
+top_radius = 0.01
+bottom_radius = 0.05
+height = 1.0
+
+[sub_resource type="CylinderMesh" id=5]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 10.0
+
+[node name="Turret" type="MeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.598835, 0 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0, 0 )
+shape = SubResource( 2 )
+
+[node name="FieldOfView" type="Spatial" parent="."]
+script = ExtResource( 2 )
+
+[node name="RayCast" type="RayCast" parent="FieldOfView"]
+enabled = true
+
+[node name="Area" type="Area" parent="FieldOfView"]
+collision_layer = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="FieldOfView/Area"]
+shape = SubResource( 3 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0, 0.707801 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 5 )
+material/0 = null
+[connection signal="body_entered" from="FieldOfView/Area" to="FieldOfView" method="_entered_field_of_awareness"]
+[connection signal="body_exited" from="FieldOfView/Area" to="FieldOfView" method="_exited_field_of_awareness"]
