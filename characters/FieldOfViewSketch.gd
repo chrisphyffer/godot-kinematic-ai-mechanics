@@ -24,7 +24,7 @@ func _ready():
 		{'color': Color(1,0,0,1), 'end' : transform.origin + Vector3(3,0,5), 'start' : transform.origin },
 		{'color': Color(1,1,0,1), 'end' : (global_transform.origin + Vector3(0,0,5) ) , 'start' : global_transform.origin }
 	]
-	
+
 	for i in range(0, line_collection.size()):
 		draw_line(line_collection[i].start, line_collection[i].end, line_collection[i].color)
 
@@ -33,18 +33,99 @@ func _ready():
 	for child in get_parent().get_children():
 		print(get_parent().name, ' - > ' , child.name)
 		$RayCast.add_exception(child)
-		
+
 	print('PARENT: ', get_parent())
 
+	initial_forward = get_parent().transform.basis.z
+	field_of_view_resolution = float(field_of_view_resolution)
+	return
+	
+var initial_forward = Vector3()
 
+export var field_of_view = 45
+export var field_of_view_resolution = 3
+export var field_of_view_ray_length = 20
+var field_of_view_draws = []
+var field_of_view_array_filled = false
+var fov_height = 1
+
+func draw_field_of_view():
+	var parent = get_parent().transform
+
+	var origin_pos = Vector3(parent.origin.x, fov_height, parent.origin.z)
+	
+	
+	var current_angle = deg2rad(0)
+	
+	#draw_line(origin_pos, destVector, Color(0,1,0,1) )
+	#print(forward)
+	#print(destVector)
+
+	var start_angle = - ( field_of_view *.5 )
+	var space_state = get_world().direct_space_state
+	var finalDestination
+	
+	for i in range( ( field_of_view+1 ) * field_of_view_resolution):
+		
+		var forward = initial_forward * field_of_view_ray_length
+		
+		current_angle = deg2rad( start_angle + ( i / field_of_view_resolution )   )
+		#print('CURRENTANGLE',  start_angle + ( i / field_of_view_resolution ) )
+		var field_of_view_ray_color = Color(1,1,1,1)
+		
+		var destVector = Vector3()
+		destVector.x = ( forward.x * cos(current_angle) ) - ( forward.z * sin(current_angle) )
+		destVector.y = fov_height
+		destVector.z = ( forward.x * sin(current_angle) ) + ( forward.z * cos(current_angle) )
+
+		var result = space_state.intersect_ray( parent.origin, to_global(destVector) )
+		
+		if (i/field_of_view_resolution) == ceil(field_of_view / 2):
+			#print('STANDARD: ', finalDestination)
+			field_of_view_ray_color = Color(1,0,0,1)
+			
+		if not result.empty():
+			#print('ray_hit', i)
+			var result_l = to_local(result.position)
+			finalDestination = result_l
+			#finalDestination = destVector
+			#if i == ceil(field_of_view / 2):
+				#print('COLLIER: ', finalDestination, ' NAME: ', result.collider.name)
+		else:
+			finalDestination = destVector
+
+		if rad2deg(current_angle*2) != field_of_view:
+			pass # Change Color
+
+		if field_of_view_array_filled:
+			draw_line(origin_pos, finalDestination, field_of_view_ray_color, \
+					field_of_view_draws[i])
+		else:
+			field_of_view_draws.append( draw_line(origin_pos, finalDestination, \
+				 field_of_view_ray_color) )
+
+		#if i == 0:
+		#	start_vector = destVector
+		#elif i == field_of_view:
+		#	end_vector = destVector
+
+		#var angle_reversed = rad2deg( acos(forwarded.normalized().dot(destVector.normalized())) )
+
+		if(int( float(i) / field_of_view_resolution ) % 10 == 0 and not field_of_view_array_filled):
+			var angle_reversed = rad2deg( acos( (initial_forward * field_of_view_ray_length).normalized().dot( destVector.normalized() ) ) )
+			#print(' ANGLE : ', rad2deg(current_angle), origin_pos, destVector, \
+			#' DOT : ', (initial_forward * field_of_view_ray_length).normalized().dot(destVector.normalized()), ' Reversed Angle: ', angle_reversed)
+
+	field_of_view_array_filled = true
 
 
 func _physics_process(delta):
 	var parent = get_parent().transform
 
+	draw_field_of_view()
+
 	if bodies_in_awareness.empty():
 		return
-
 
 	#if target_character:
 	#
@@ -68,13 +149,13 @@ func _physics_process(delta):
 		var target_rotation = false
 		var currentRotation = false
 		var characterInSight = false
-		
+
 		$RayCast.look_at(inverted_character_position, Vector3(0,1,0))
 		$RayCast.force_raycast_update()
 		if $RayCast.is_colliding():
 			var body = $RayCast.get_collider()
 			if body.is_in_group('Character'):
-				
+
 				if character_in_view(target_character.transform.origin, parent.origin, parent.basis.z):
 					target_rotation = parent.looking_at(inverted_character_position, Vector3(0,1,0))
 					currentRotation = Quat(parent.basis).slerp(target_rotation.basis, delta * ROTATION_SPEED)
@@ -86,20 +167,20 @@ func _physics_process(delta):
 				elif not looked_around_for_character:
 					# Look around wildly for character, maybe he is behind you!
 					looked_around_for_character = look_around_for_character(delta, parent, PI)
-						
+
 					pass
-				
+
 				pass
 			else:
 				# Character is behind something.
 				positionsOfInterest.lastLostPosition = positionsOfInterest.lastSeenPosition
-				
+
 				target_rotation = parent.looking_at(positionsOfInterest.lastLostPosition, Vector3(0,1,0))
 				currentRotation = Quat(parent.basis).slerp(target_rotation.basis, delta * ROTATION_SPEED)
 				pursue_character(currentRotation, parent.origin)
-				
+
 				#print('Character Last Seen: ', positionsOfInterest.lastLostPosition)
-				
+
 			# WHERE WAS THE TARGET LAST SEEN???!?! GO THERE.
 			# If lost body....then target_character == ?!
 			# Depending on agression, hunt character or just find the other target.
@@ -108,11 +189,12 @@ func _physics_process(delta):
 		#	print('nocolission..')
 			#if body.has_method("bullet_hit"):
 				#body.bullet_hit(TURRET_DAMAGE_RAYCAST, $RayCast.get_collision_point())
-		
+
 		if characterInSight == false:
 			if character_is_audible():
 				# Pay Attention, he's around here somewhere...
 				pass
+
 
 func find_nearest_character(parent:Transform):
 	var shortest_body = null
@@ -138,45 +220,51 @@ func find_nearest_character(parent:Transform):
 func character_in_view(characterPosition:Vector3, currentPosition:Vector3, forwardVector:Vector3):
 	var pa = (characterPosition - currentPosition).normalized()
 	#print(pa.dot(forwardVector))
-	if pa.dot(forwardVector) > 0:
+	if pa.dot(forwardVector) > cos(deg2rad( 90-field_of_view ) ): #cos(PI/2)
 		return true
+
+	print('PA: ' , pa.dot(forwardVector))
+	print('COS: ', cos( deg2rad( 90-(field_of_view) )  ))
 		
 	return false
+
 
 # Footsteps
 func character_is_audible():
 	pass
 
+
 func pursue_character(currentRotation:Quat, currentPosition:Vector3):
 	get_parent().set_transform( Transform(currentRotation, currentPosition).orthonormalized() )
 	pass
-	
+
 
 const QUAT_EQUIVALENCE_DEADZONE:float = .15
-
 func quat_roughly_equal_to(quat1:Quat, quat2:Quat):
-	
+
 	if quat1.y - QUAT_EQUIVALENCE_DEADZONE < quat2.y and\
 		quat1.y + QUAT_EQUIVALENCE_DEADZONE > quat2.y and\
 		quat1.w - QUAT_EQUIVALENCE_DEADZONE < quat2.w and\
 		quat1.w + QUAT_EQUIVALENCE_DEADZONE > quat2.w:
 		return true
-		
+
 	return false
+
 
 var looked_around_for_character = false
 var look_around_rotation = false
 func look_around_for_character(delta:float, parent:Transform, targetAngle:float=PI):
 	if not look_around_rotation:
 		look_around_rotation = parent.rotated(Vector3(0,1,0), targetAngle)
-		
+
 	if quat_roughly_equal_to(get_parent().transform.basis.get_rotation_quat(), look_around_rotation.basis.get_rotation_quat()):
 		print('Quat match')
 		return true
-		
+
 	var targetRotation = Quat(parent.basis).slerp(look_around_rotation.basis, delta * ROTATION_SPEED)
 	pursue_character(targetRotation, parent.origin)
-	
+
+
 var bodies_in_awareness = []
 func _entered_field_of_awareness(body:Node):
 
@@ -185,6 +273,7 @@ func _entered_field_of_awareness(body:Node):
 		print(body)
 
 	pass # Replace with function body.
+
 
 func _exited_field_of_awareness(body):
 
@@ -196,7 +285,6 @@ func _exited_field_of_awareness(body):
 		bodies_in_awareness.remove(index)
 	print(body, ' => ', index)
 	pass # Replace with function body.
-
 
 
 var go_reverse = false
@@ -224,16 +312,18 @@ func back_forth_rotate(delta):
 		go_reverse = !go_reverse
 
 
+func draw_line(start, end, color, existingDrawNode:Node = null):
 
-
-func draw_line(start, end, color):
-
+	var draw_path_node = null
 	var _m = SpatialMaterial.new()
 	_m.albedo_color = color
 	_m.flags_unshaded = true
 	_m.flags_use_point_size = true
 
-	var draw_path_node = ImmediateGeometry.new()
+	if existingDrawNode:
+		draw_path_node = existingDrawNode
+	else:
+		draw_path_node = ImmediateGeometry.new()
 
 	draw_path_node.set_material_override(_m)
 	draw_path_node.clear()
@@ -246,8 +336,14 @@ func draw_line(start, end, color):
 	draw_path_node.begin(Mesh.PRIMITIVE_LINE_STRIP, null)
 	draw_path_node.add_vertex(start )
 	draw_path_node.add_vertex(end )
+	
 	draw_path_node.end()
+	
+	
+	
+	
 
-	add_child(draw_path_node)
+	if not existingDrawNode:
+		get_parent().add_child(draw_path_node)
 
-
+	return draw_path_node
