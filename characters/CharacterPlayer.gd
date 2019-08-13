@@ -1,16 +1,31 @@
-extends Character
+extends Node
 
-class_name Player
+class_name CharacterPlayer
+
+var me:Character = null
 
 var camera : Camera = null
-
-export var point_and_click : bool = true
+var point_and_click : bool = true
 
 func _ready():
-	if point_and_click == true:
-		camera = get_tree().get_root().find_node('Camera', true, false)
+	me = get_parent()
+	
+	if me.controlled_by_player:
+		camera = me.camera
+		
+		if point_and_click == true:
+			camera = get_tree().get_root().find_node('Camera', true, false)
+			
+		set_physics_process(true)
+		
+	else:
+		set_physics_process(false)
+			
 
 func _input(event):
+	
+	if not me.controlled_by_player:
+		return
 	
 	# Point and Click Adventure!
 	
@@ -18,13 +33,9 @@ func _input(event):
 	if (event.is_class("InputEventMouseButton") and event.button_index == BUTTON_LEFT and event.pressed):
 		var from = camera.project_ray_origin(event.position)
 		var to = from + camera.project_ray_normal(event.position)*100
-		var end = navLevel.get_closest_point_to_segment(from, to)
+		var end = me.navLevel.get_closest_point_to_segment(from, to)
 		
-		var _paths = get_navigation_path( end )
-		if typeof(_paths) == TYPE_ARRAY:
-			navigation_path = _paths
-		#else:
-			#print('Cannot Generate Paths from Input')
+		me.set_navigation_path(end)
 			
 func _physics_process(delta):
 	pass

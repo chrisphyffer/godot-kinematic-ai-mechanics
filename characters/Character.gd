@@ -1,10 +1,58 @@
 extends KinematicBody
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
+# THIS IS AN ABSTRACT CLASS. YOU SHOULD NOT INHERIT IT.
 class_name Character
+
+################### 
+# System Variables
+export(bool) var debug_mode
+
+
+###################
+# Character Description
+export(bool) var controlled_by_player = true
+
+#### Hostility
+# 1 - Will run. 
+# 2 - Attacks if attacked. 
+# 3 - Attacks if attacked and will chase you
+# 4 - Attacks in you are in sight.
+enum HOSTILITY_LEVELS { IDLE=0, PREY=1, DEFENSIVE=2, AGRESSIVE=3, HUNTER=4 }
+
+export(HOSTILITY_LEVELS) var hostility_level = HOSTILITY_LEVELS.get('PREY')
+
+export(int) var health = 100
+
+
+##################
+# Field of View
+export(float) var fov_height = 1.0
+export var field_of_view = 45
+export(float) var field_of_view_resolution = 1.0
+
+##################
+# Game Controller Variables
+var camera : Camera = null
+export var point_and_click : bool = true
+
+
+
+###################
+# Node Specific Variables
+
+
+
+# GD Script Enum character type:
+# Armature driven? Static Body? :)
+
+
+
+
+
+
+
+
+
 
 
 var accumulated_rotation = 0
@@ -24,7 +72,7 @@ export(Material) var body_material setget set_body_material
 export(bool) var teleport_on_fail = false
 
 const PATH_FAIL_MAX = 3
-var path_fail = 0
+
 const MAX_ERRORS = 10
 var errors = 0
 
@@ -54,6 +102,7 @@ export(bool) var debug_draw_path = true
 export var navigation_draw_color:Color = Color(1, 1, 1, 1)
 
 var navigation_path:Array = []
+var path_fail : bool = false
 
 
 
@@ -177,6 +226,11 @@ func get_navigation_path(destination: Vector3):
 	do_debug_draw_path()
 	return true
 
+func set_navigation_path(end):
+	TYPE_ARRAY
+	var _paths = get_navigation_path( end )
+	if typeof(_paths) == TYPE_ARRAY:
+		navigation_path = _paths
 
 
 

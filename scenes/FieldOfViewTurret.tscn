@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://materials/grey.tres" type="Material" id=1]
 [ext_resource path="res://characters/FieldOfViewSketch.gd" type="Script" id=2]
@@ -18,6 +18,10 @@ radius = 0.5
 
 [sub_resource type="CubeMesh" id=3]
 size = Vector3( 0.2, 0.2, 5 )
+
+[sub_resource type="SphereMesh" id=18]
+radius = 0.4
+height = 0.4
 
 [sub_resource type="SphereShape" id=4]
 radius = 12.0
@@ -82,6 +86,7 @@ shape = SubResource( 2 )
 
 [node name="FieldOfView" type="Spatial" parent="TurretBody"]
 script = ExtResource( 2 )
+field_of_view = 180
 
 [node name="RayCast" type="RayCast" parent="TurretBody/FieldOfView"]
 enabled = true
@@ -89,6 +94,11 @@ cast_to = Vector3( 0, 0, 20 )
 
 [node name="MeshInstance" type="MeshInstance" parent="TurretBody/FieldOfView/RayCast"]
 mesh = SubResource( 3 )
+material/0 = null
+
+[node name="MeshInstance" type="MeshInstance" parent="TurretBody/FieldOfView/RayCast/MeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.13145 )
+mesh = SubResource( 18 )
 material/0 = null
 
 [node name="Area" type="Area" parent="TurretBody/FieldOfView"]
@@ -162,7 +172,7 @@ shape = SubResource( 17 )
 [node name="SimpleMan" parent="." groups=[
 "Character",
 ] instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.07048, 0.058192, 4.94438 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.92309, 0.058192, 0.489382 )
 script = ExtResource( 5 )
 body_material = ExtResource( 6 )
 locomotion_speed = 2.0

@@ -3,7 +3,6 @@
 [ext_resource path="res://materials/grey.tres" type="Material" id=1]
 [ext_resource path="res://characters/FieldOfViewSketch.gd" type="Script" id=2]
 
-
 [sub_resource type="CylinderMesh" id=1]
 material = ExtResource( 1 )
 top_radius = 0.25

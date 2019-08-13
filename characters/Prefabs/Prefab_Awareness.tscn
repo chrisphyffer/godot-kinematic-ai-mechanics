@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://characters/FieldOfViewSketch.gd" type="Script" id=1]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 0.2, 0.2, 5 )
+
+[sub_resource type="SphereMesh" id=2]
+radius = 0.4
+height = 0.4
+
+[sub_resource type="SphereShape" id=3]
+radius = 12.0
+
+[node name="Awareness" type="Spatial"]
+script = ExtResource( 1 )
+field_of_view = 180
+field_of_view_resolution = null
+field_of_view_ray_length = null
+
+[node name="RayCast" type="RayCast" parent="."]
+enabled = true
+cast_to = Vector3( 0, 0, 20 )
+
+[node name="MeshInstance" type="MeshInstance" parent="RayCast"]
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="MeshInstance" type="MeshInstance" parent="RayCast/MeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.13145 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Area" type="Area" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+shape = SubResource( 3 )
+[connection signal="body_entered" from="Area" to="." method="_entered_field_of_awareness"]
+[connection signal="body_exited" from="Area" to="." method="_exited_field_of_awareness"]
