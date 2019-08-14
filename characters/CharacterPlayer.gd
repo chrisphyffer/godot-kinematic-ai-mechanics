@@ -35,7 +35,9 @@ func _input(event):
 		var to = from + camera.project_ray_normal(event.position)*100
 		var end = me.navLevel.get_closest_point_to_segment(from, to)
 		
-		me.set_navigation_path(end)
+		if me.set_navigation_path(end):
+			me.set_travel_speed(me.default_locomotion_speed)
 			
 func _physics_process(delta):
-	pass
+	if not me.navigation_path:
+		me.set_travel_speed(0)

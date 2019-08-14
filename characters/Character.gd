@@ -10,7 +10,14 @@ export(bool) var debug_mode
 
 ###################
 # Character Description
+export(float) var character_height = 1.0
+
+
+###################
+# AI Settings
 export(bool) var controlled_by_player = true
+export(Array, NodePath) var waypoints
+export(bool) var patrol_waypoints = true
 
 #### Hostility
 # 1 - Will run. 
@@ -18,9 +25,7 @@ export(bool) var controlled_by_player = true
 # 3 - Attacks if attacked and will chase you
 # 4 - Attacks in you are in sight.
 enum HOSTILITY_LEVELS { IDLE=0, PREY=1, DEFENSIVE=2, AGRESSIVE=3, HUNTER=4 }
-
 export(HOSTILITY_LEVELS) var hostility_level = HOSTILITY_LEVELS.get('PREY')
-
 export(int) var health = 100
 
 
@@ -88,7 +93,7 @@ export var ACCEPTABLE_PATH_DISTANCE:float = .5
 const DESTINATION_ACCESS_TIME = 6000
 var remaining_access_time = DESTINATION_ACCESS_TIME
 
-export var locomotion_speed:float = 1
+export var default_locomotion_speed:float = 1
 
 
 #############
@@ -96,13 +101,17 @@ export var locomotion_speed:float = 1
 export(NodePath) var navLevelPath
 var navLevel
 
-# Debug Path Draw
+var navigation_path:Array = []
+var path_fail : bool = false
+
+
+##################################
+# Debugging
+
 var draw_path_node:ImmediateGeometry
 export(bool) var debug_draw_path = true
 export var navigation_draw_color:Color = Color(1, 1, 1, 1)
-
-var navigation_path:Array = []
-var path_fail : bool = false
+var debug_echo_interval = 0
 
 
 
@@ -115,6 +124,14 @@ func _ready():
 func set_body_material(mat: Material):
 	find_node('SimpleManMesh').set_surface_material(0, mat)
 
+func set_travel_speed(speed:float):
+	$AnimationTree["parameters/Locomotion/blend_position"] = speed
+
+func is_moving():
+	if navigation_path:
+		return true
+	else:
+		return false
 
 var process_movement : bool = true
 func _process_movement(delta):
@@ -130,7 +147,7 @@ func _process_movement(delta):
 		$AnimationTree["parameters/Locomotion/blend_position"] = 0
 		return
 
-	$AnimationTree["parameters/Locomotion/blend_position"] = locomotion_speed
+	#$AnimationTree["parameters/Locomotion/blend_position"] = locomotion_speed
 	$AnimationTree["parameters/LocomotionTimeScale/scale"] = 1
 
 	if global_transform.origin.distance_to(navigation_path[0]) < ACCEPTABLE_PATH_DISTANCE:
@@ -176,6 +193,11 @@ func _process_movement(delta):
 func _physics_process(delta):
 	_process_movement(delta)
 	_check_vision(delta)
+	
+	if debug_mode:
+		if debug_echo_interval > 1:
+			debug_echo_interval = 0
+		debug_echo_interval += delta
 
 func do_debug_draw_path(clear_draw_path_only:bool = false):
 	if debug_draw_path:
@@ -211,30 +233,19 @@ func do_debug_draw_path(clear_draw_path_only:bool = false):
 		return draw_path_node
 
 
-func get_navigation_path(destination: Vector3):
-	navigation_path = navLevel.generate_path(self, destination)
-
-	if not typeof(navigation_path) == TYPE_ARRAY:
-		path_fail = true
-
-	if navigation_path.empty():
-		path_fail = true
-
-	if path_fail:
-		return false
-
-	do_debug_draw_path()
-	return true
-
-func set_navigation_path(end):
+func set_navigation_path(end: Vector3):
+	
 	TYPE_ARRAY
-	var _paths = get_navigation_path( end )
-	if typeof(_paths) == TYPE_ARRAY:
+	var _paths = navLevel.generate_path(self, end)
+	if typeof(_paths) == TYPE_ARRAY and not _paths.empty():
 		navigation_path = _paths
+		do_debug_draw_path()
+		return true
+	
+	path_fail = true
+	return false
 
 
-
-var find_nearest_waypoint_behind = false
 
 ##################
 # CHECK VISION
@@ -254,3 +265,8 @@ func _object_exited_area_of_awareness(body):
 		if bodies_in_awareness[i] == body:
 			bodies_in_awareness.remove(i)
 			break
+
+# DEBUG TOOLS.
+func echo( message:String = 'Empty Message..'):
+	if debug_mode and debug_echo_interval >= 1:
+		print(self.name, ' : ', message)

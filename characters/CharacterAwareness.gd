@@ -15,7 +15,7 @@ var field_of_view_array_filled = false
 
 #######################
 # Entity Detection
-var target_character:Node #Determines if the character is in range of awareness.
+var target_character:Node #Determines if the character is in range of awareness. (NEARBY TARGET)
 var positionsOfInterest = {
 	'lastSeenPosition': false, # Position of player last seen
 	'lastLostPosition': false, # Position of enemy when player lost
@@ -24,7 +24,7 @@ var positionsOfInterest = {
 var bodies_in_awareness = []
 var i_can_see_the_character:bool = false
 
-	
+
 #######################
 # Debug Assistance
 var field_of_view_draws = []
@@ -32,44 +32,43 @@ var debug_node:Node = null
 var field_of_view_ray_length = 20
 
 func _ready():
-	
+
 	# Grab our initial Forward Vector
-	initial_forward = get_parent().transform.basis.z
+	#initial_forward = get_tree().get_root().get_node( get_parent().get_path() ).transform.basis.z # GET THE REAL PARENTS TRANSFORM BASIS!!!! NOT THE ONE WITHIN THE WITHIN..
+	
+	
+	initial_forward = Vector3(0,0,1)
 	me = get_parent()
 	debug_node = get_parent().get_node('Debug')
 	
 	if me.debug_mode:
 		var line_collection = [
-			{'color': Color(1,0,0,1), 'end' : transform.origin + Vector3(3,0,5), 'start' : transform.origin },
-			{'color': Color(1,1,0,1), 'end' : (global_transform.origin + Vector3(0,0,5) ) , 'start' : global_transform.origin }
+			{'color': Color(1,0,0,1), 'end' : me.transform.origin + Vector3(0,me.fov_height+1,15), 'start' : me.transform.origin+Vector3(0,me.fov_height,0) },
+			{'color': Color(1,1,0,1), 'end' : me.global_transform.origin + Vector3(3,me.fov_height+1,15) , 'start' : global_transform.origin+Vector3(0,me.fov_height,0) }
 		]
-	
+		
 		for i in range(0, line_collection.size()):
-			debug_node.draw_line(line_collection[i].start, line_collection[i].end, line_collection[i].color)
-			
+			if me.debug_mode:
+				print(debug_node.draw_line(line_collection[i].start, line_collection[i].end, \
+					line_collection[i].color) )
+
 		field_of_view_ray_length = $Area/CollisionShape.shape.get('radius')
 
-	$RayCast.exclude_parent = true
-	$RayCast.add_exception(self)
-	for child in me.get_children():
-		print(me.name, ' - > ' , child.name)
-		$RayCast.add_exception(child)
-		
-	# If defeated, set physics process to none.
-	# set_physics_process(false)
 
-
-
-
+var rayNode = null
 
 func _physics_process(delta):
 	var parent = me.transform
+	i_can_see_the_character = false
 
 	if me.debug_mode:
 		draw_field_of_view()
+		pass
 
 	if bodies_in_awareness.empty():
 		return
+
+
 
 	#if target_character:
 	#
@@ -83,23 +82,54 @@ func _physics_process(delta):
 	#
 	#	print(pa.dot(parent.basis.z))
 
-	if not target_character:
-		i_can_see_the_character = false
-		target_character = find_nearest_character(parent)
 
+
+	if not target_character:
+		me.echo('I have no target Characters.. Looking for other characters..')
+		i_can_see_the_character = false
+		target_character = find_nearest_character()
+		
 	if target_character:
+		
+		me.echo('I have a target character, checking if they are on imy field of view.')
+		
+		# REVERSE THE LOOKAT POSITION....
+		var target_height = target_character.character_height / 2
+		var char_pos = target_character.transform.origin
+		char_pos.y = char_pos.y + target_height
+		
+		var parent_transform = parent.origin + Vector3(0,target_height,0)
+		
+		me.echo('TARGET-CHARACTER: ('+target_character.name+') : ' + str(target_character.transform.origin) )
+		
 		# ROTATION IS BACKWARDS -Z IN GODOT....
-		var inverted_character_position = Vector3(-target_character.transform.origin.x, parent.origin.y, -target_character.transform.origin.z)
+		
 		var target_rotation = false
 		var currentRotation = false
 		var characterInSight = false
-
-		$RayCast.look_at(inverted_character_position, Vector3(0,1,0))
-		$RayCast.force_raycast_update()
-		if $RayCast.is_colliding():
-			var body = $RayCast.get_collider()
+		
+		# Since our character is facing -z...
+		var forward_vector = -get_parent().transform.basis.z
+		
+		var space_state = get_tree().get_root().get_world().direct_space_state
+		var result = space_state.intersect_ray( parent_transform, char_pos )
+		
+		if me.debug_mode:
+			rayNode = debug_node.draw_line(parent_transform, char_pos,\
+				 Color(1,1,1,1), rayNode, true)
+		
+		if not result.empty():
+			
+			var body = result.collider
+			me.echo('RAYCAST COLLIDING: ('+body.name+')')
+				
 			if body.is_in_group('Character'):
-				if character_in_view(target_character.transform.origin, parent.origin, parent.basis.z):
+				
+				me.echo('Target Character('+body.name+') is in the *Character Group*, and nothing'+\
+					' is obstructing my vision of them.')
+					
+				if character_in_view(char_pos, parent_transform, forward_vector):
+					me.echo('Character is in View')
 					i_can_see_the_character = true
 					#~~target_rotation = parent.looking_at(inverted_character_position, Vector3(0,1,0))
 					#~~currentRotation = Quat(parent.basis).slerp(target_rotation.basis, delta * ROTATION_SPEED)
@@ -107,8 +137,8 @@ func _physics_process(delta):
 					#~~pursue_character(currentRotation, parent.origin)
 					#~~look_around_rotation = false
 					#~~characterInSight = true
-					
-					
+				else:
+					me.echo('Character is not in view: '+ str(target_character.transform.origin) )
 					#print('Character is in view')
 				pass
 			else:
@@ -135,20 +165,32 @@ func _physics_process(delta):
 			if character_is_audible():
 				# Pay Attention, he's around here somewhere...
 				pass
+				
+
+
 
 #############################
 # find_nearest_character()
 # Finds the nearest character to this character.
 
-func find_nearest_character(parent:Transform):
+func find_nearest_character():
+	
+	var forward_vector = -get_parent().transform.basis.z
+	
+	var parent = me.transform
 	var shortest_body = null
 	var shortest_distance = false
 	for i in range(0, bodies_in_awareness.size()):
-
 		# Who is in our field of vision?
-		if not character_in_view(bodies_in_awareness[i].transform.origin, parent.origin, parent.basis.z):
+		
+		var target_height = bodies_in_awareness[i].character_height / 2
+		var char_pos = bodies_in_awareness[i].transform.origin
+		char_pos.y = char_pos.y + target_height
+		var parent_transform = parent.origin + Vector3(0,target_height,0)
+		
+		if not character_in_view(char_pos, parent_transform, forward_vector):
 			continue
-
+		
 		# Which body is closer?
 		var distance = parent.origin.distance_to(bodies_in_awareness[i].transform.origin)
 
@@ -158,22 +200,26 @@ func find_nearest_character(parent:Transform):
 		if parent.origin.distance_to(bodies_in_awareness[i].transform.origin) < parent.origin.distance_to(shortest_body.transform.origin):
 			shortest_distance = distance
 			shortest_body = bodies_in_awareness[i]
-
+	
 	return shortest_body
 
 #############################
-# find_nearest_character()
+# character_in_view()
 # Is this character in my field of view?
 
 func character_in_view(characterPosition:Vector3, currentPosition:Vector3, forwardVector:Vector3):
 	
 	var pa = (characterPosition - currentPosition).normalized()
+	
+	me.echo(str(characterPosition) +  ' <   > ' + str(currentPosition) + ' &&& ' + str(forwardVector)  +' ~~~~~~ ' + str(rad2deg( acos( pa.dot(forwardVector) ) ) ) )
+		
 	# I want the character's origin, not his capsule, this is why
 	# This character in view will detect only the players origin, not a ray hitting a capsule...
 	if rad2deg( acos( pa.dot(forwardVector) ) ) <= me.field_of_view/2:
 		return true
+		
 	return false
-	
+
 
 #############################
 # find_nearest_character()
@@ -189,10 +235,17 @@ func character_is_audible():
 #
 
 func _entered_field_of_awareness(body:Node):
-
 	if body.is_in_group('Character'):
-		bodies_in_awareness.append(body)
-		print(body)
+		#print('CHARACTER', body)
+		#print('WHO ME?', get_parent())
+		if me.debug_mode:
+			print(body.name, ' --- ', get_parent().name)
+		if body.name != get_parent().name:
+			if me.debug_mode:
+				print(body.name)
+				print(body.transform.origin)
+			bodies_in_awareness.append(body)
+		#print(body)
 
 
 func _exited_field_of_awareness(body):
@@ -203,7 +256,7 @@ func _exited_field_of_awareness(body):
 	var index = bodies_in_awareness.find(body)
 	if index != -1:
 		bodies_in_awareness.remove(index)
-	print(body, ' => ', index)
+	#print(body, ' => ', index)
 
 #
 # ############################# END : NODE SIGNALS
@@ -217,36 +270,36 @@ func _exited_field_of_awareness(body):
 # represent the character's field of view.
 
 func draw_field_of_view():
-	
-	var parent = me.transform
+
+	var parent = me.get_transform()
 
 	#var origin_pos = Vector3(parent.origin.x, me.fov_height, parent.origin.z)
-	var origin_pos = Vector3(0,me.fov_height,0)
-	
+	var origin_pos = Vector3(0, me.fov_height, 0)
+
 	var start_angle = - ( me.field_of_view *.5 )
 	var space_state = get_world().direct_space_state
 	var finalDestination
 	var current_angle = 0
-	
+
 	for i in range( ( me.field_of_view+1 ) * me.field_of_view_resolution):
-		
+
 		var forward = initial_forward * field_of_view_ray_length
-		
+
 		current_angle = deg2rad( start_angle + ( i / me.field_of_view_resolution )   )
 		#print('CURRENTANGLE',  start_angle + ( i / field_of_view_resolution ) )
 		var field_of_view_ray_color = Color(1,1,1,1)
-		
+
 		var destVector = Vector3()
 		destVector.x = ( forward.x * cos(current_angle) ) - ( forward.z * sin(current_angle) )
 		destVector.y = me.fov_height
 		destVector.z = -1 *  ( ( forward.x * sin(current_angle) ) + ( forward.z * cos(current_angle) ) )
 
 		var result = space_state.intersect_ray( parent.origin, to_global(destVector) )
-		
+
 		if (i/me.field_of_view_resolution) == ceil(me.field_of_view / 2):
 			#print('STANDARD: ', finalDestination)
 			field_of_view_ray_color = Color(1,0,0,1)
-			
+
 		if not result.empty():
 			#print('ray_hit', i)
 			var result_l = to_local(result.position)
@@ -262,7 +315,6 @@ func draw_field_of_view():
 			pass # Change Color
 
 		if field_of_view_array_filled:
-			
 			debug_node.draw_line(origin_pos, finalDestination, field_of_view_ray_color, \
 					field_of_view_draws[i])
 		else:

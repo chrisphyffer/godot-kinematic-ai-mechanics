@@ -2,7 +2,9 @@ extends Node
 
 class_name CharacterDebug
 
-func draw_line(start, end, color, existingDrawNode:Node = null):
+
+
+func draw_line(start, end, color, existingDrawNode:Node = null, attach_to_world:bool = false):
 	
 	var draw_path_node = null
 	var _m = SpatialMaterial.new()
@@ -30,6 +32,9 @@ func draw_line(start, end, color, existingDrawNode:Node = null):
 	draw_path_node.end()
 	
 	if not existingDrawNode:
-		get_parent().add_child(draw_path_node)
+		if attach_to_world:
+			get_tree().get_root().add_child(draw_path_node)
+		else:
+			get_parent().add_child(draw_path_node)
 
 	return draw_path_node
