@@ -6,7 +6,6 @@ extends Spatial
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print('TRANSFORM BASIS SCENE ROOT', get_node('SimpleMan').transform.basis.z)
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -9,6 +9,16 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Resource",
+"class": "Attack",
+"language": "GDScript",
+"path": "res://characters/Attack.gd"
+}, {
+"base": "Reference",
+"class": "AttackRule",
+"language": "GDScript",
+"path": "res://characters/AttackRule.gd"
+}, {
 "base": "KinematicBody",
 "class": "Character",
 "language": "GDScript",
@@ -40,6 +50,8 @@ _global_script_classes=[ {
 "path": "res://Waypoint.gd"
 } ]
 _global_script_class_icons={
+"Attack": "",
+"AttackRule": "",
 "Character": "",
 "CharacterAI": "",
 "CharacterAwareness": "",

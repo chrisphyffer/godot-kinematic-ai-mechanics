@@ -14,6 +14,19 @@ export(float) var character_height = 1.0
 
 
 ###################
+# Battle Experience
+
+export(int) var health = 100
+export(int) var mana = 100
+var attack_list = [
+	Attack.new('AttackPunch', 
+			Attack.ATTACK_TYPE.FRONTAL_ASSAULT, \
+			1.0, 2.0, 'AttackPunch',
+			[AttackRule.new('distance', 2000.0)])
+]
+
+
+###################
 # AI Settings
 export(bool) var controlled_by_player = true
 export(Array, NodePath) var waypoints
@@ -26,14 +39,17 @@ export(bool) var patrol_waypoints = true
 # 4 - Attacks in you are in sight.
 enum HOSTILITY_LEVELS { IDLE=0, PREY=1, DEFENSIVE=2, AGRESSIVE=3, HUNTER=4 }
 export(HOSTILITY_LEVELS) var hostility_level = HOSTILITY_LEVELS.get('PREY')
-export(int) var health = 100
+
+export(float) var time_to_search_for_target = 5.0
 
 
 ##################
-# Field of View
+# The Senses - Field of View
 export(float) var fov_height = 1.0
 export var field_of_view = 45
 export(float) var field_of_view_resolution = 1.0
+export(float) var vision_max_distance = 20.0
+export(float) var radius_of_awareness = 12.0
 
 ##################
 # Game Controller Variables
@@ -59,7 +75,7 @@ export var point_and_click : bool = true
 
 
 
-
+export(float) var rotation_speed = 1.0
 var accumulated_rotation = 0
 var arrived_at_position = false
 var rotated_to_position = false
@@ -110,7 +126,7 @@ var path_fail : bool = false
 
 var draw_path_node:ImmediateGeometry
 export(bool) var debug_draw_path = true
-export var navigation_draw_color:Color = Color(1, 1, 1, 1)
+export var navigation_draw_color:Color = Color(0, 0, 1, 1)
 var debug_echo_interval = 0
 
 
@@ -139,11 +155,8 @@ func _process_movement(delta):
 	if not process_movement:
 		return
 
-	if typeof(navigation_path) != TYPE_ARRAY:
-		$AnimationTree["parameters/Locomotion/blend_position"] = 0
-		return
-
-	if navigation_path.empty():
+	if typeof(navigation_path) != TYPE_ARRAY or navigation_path.empty():
+		echo('Navigation Path is not valid type or empty...', true)
 		$AnimationTree["parameters/Locomotion/blend_position"] = 0
 		return
 
@@ -164,7 +177,7 @@ func _process_movement(delta):
 	var rotTransform = t.looking_at(navigation_path[0], Vector3(0,1,0))
 	var thisRotation = Quat(t.basis).slerp( rotTransform.basis, clamp(accumulated_rotation, 0, 1) )
 
-	accumulated_rotation += delta
+	accumulated_rotation += delta * rotation_speed
 
 	if accumulated_rotation > 1:
 		accumulated_rotation = 1
@@ -172,10 +185,12 @@ func _process_movement(delta):
 	if not rotated_to_position:
 		orientation.basis = Transform(thisRotation, t.origin).basis
 
+	orientation.basis = Transform(rotTransform.basis, t.origin).basis
+
 	var root_motion = $AnimationTree.get_root_motion_transform()
 
 	# apply root motion to orientation
-	orientation *= root_motion
+	orientation *= root_motion # Push this character forward.
 
 	var h_velocity = orientation.origin / delta
 	velocity.x = -h_velocity.x # NEGATIVES DUE TO FLIPPED Z FRONT...
@@ -192,10 +207,11 @@ func _process_movement(delta):
 
 func _physics_process(delta):
 	_process_movement(delta)
-	_check_vision(delta)
 	
+	# Spits output of debug every {DEBUG_ECHO_INTERVAL} seconds.
 	if debug_mode:
 		if debug_echo_interval > 1:
+			#$AnimationTree['parameters/Punch/active'] = true
 			debug_echo_interval = 0
 		debug_echo_interval += delta
 
@@ -234,39 +250,49 @@ func do_debug_draw_path(clear_draw_path_only:bool = false):
 
 
 func set_navigation_path(end: Vector3):
-	
-	TYPE_ARRAY
 	var _paths = navLevel.generate_path(self, end)
 	if typeof(_paths) == TYPE_ARRAY and not _paths.empty():
+		echo('I have generated a path to : ' + str(end), true)
 		navigation_path = _paths
 		do_debug_draw_path()
 		return true
 	
+	echo('I cannot generate a path to : ' + str(end), true)
 	path_fail = true
 	return false
 
+func clear_navigation_path():
+	navigation_path = []
+
+##################
+# DEBUG TOOLS.
+var debug_echo_queue:Array = []
+func echo( message:String = 'Empty Message..', queue:bool = false):
+	
+	if queue:
+		var found = false
+		if not debug_echo_queue.empty():
+			for msg in debug_echo_queue:
+				if msg == message:
+					found = true
+					break
+		
+		if not found:
+			debug_echo_queue.append(message)
+	
+	if debug_mode and debug_echo_interval >= 1:
+		if not debug_echo_queue.empty():
+			for msg in debug_echo_queue:
+				print(self.name, ' : ', msg)
+		print(self.name, ' : ', message)
+		debug_echo_queue = []
+		
 
 
 ##################
-# CHECK VISION
-var process_vision : bool = true
-func _check_vision(delta):
+# Animation Calls
 
-	if not process_vision:
-		return
-
-var bodies_in_awareness = []
-func _object_entered_area_of_awareness(body):
-	bodies_in_awareness.append(body)
-	pass
-
-func _object_exited_area_of_awareness(body):
-	for i in range(0, bodies_in_awareness.size()-1):
-		if bodies_in_awareness[i] == body:
-			bodies_in_awareness.remove(i)
-			break
-
-# DEBUG TOOLS.
-func echo( message:String = 'Empty Message..'):
-	if debug_mode and debug_echo_interval >= 1:
-		print(self.name, ' : ', message)
+var is_attacking:bool = false
+func _attack(attacking:bool):
+	is_attacking = attacking
+	

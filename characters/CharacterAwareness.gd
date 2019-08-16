@@ -29,17 +29,16 @@ var i_can_see_the_character:bool = false
 # Debug Assistance
 var field_of_view_draws = []
 var debug_node:Node = null
-var field_of_view_ray_length = 20
 
 func _ready():
 
 	# Grab our initial Forward Vector
 	#initial_forward = get_tree().get_root().get_node( get_parent().get_path() ).transform.basis.z # GET THE REAL PARENTS TRANSFORM BASIS!!!! NOT THE ONE WITHIN THE WITHIN..
 	
-	
 	initial_forward = Vector3(0,0,1)
 	me = get_parent()
 	debug_node = get_parent().get_node('Debug')
+	
 	
 	if me.debug_mode:
 		var line_collection = [
@@ -51,9 +50,10 @@ func _ready():
 			if me.debug_mode:
 				print(debug_node.draw_line(line_collection[i].start, line_collection[i].end, \
 					line_collection[i].color) )
-
-		field_of_view_ray_length = $Area/CollisionShape.shape.get('radius')
-
+					
+		debug_node.draw_circle_arc(Vector3(0, me.fov_height, 0), me.radius_of_awareness)
+		
+	$Area/CollisionShape.shape.set('radius', me.radius_of_awareness)
 
 var rayNode = null
 
@@ -91,16 +91,14 @@ func _physics_process(delta):
 		
 	if target_character:
 		
-		me.echo('I have a target character, checking if they are on imy field of view.')
-		
+
 		# REVERSE THE LOOKAT POSITION....
 		var target_height = target_character.character_height / 2
 		var char_pos = target_character.transform.origin
 		char_pos.y = char_pos.y + target_height
 		
 		var parent_transform = parent.origin + Vector3(0,target_height,0)
-		
-		me.echo('TARGET-CHARACTER: ('+target_character.name+') : ' + str(target_character.transform.origin) )
+		me.echo('I have a target character ('+target_character.name+ str(target_character.transform.origin) + '), checking if they are on my field of view.')
 		
 		# ROTATION IS BACKWARDS -Z IN GODOT....
 		
@@ -129,7 +127,7 @@ func _physics_process(delta):
 					' is obstructing my vision of them.')
 					
 				if character_in_view(char_pos, parent_transform, forward_vector):
-					me.echo('Character is in View')
+					me.echo('I can see this character')
 					i_can_see_the_character = true
 					#~~target_rotation = parent.looking_at(inverted_character_position, Vector3(0,1,0))
 					#~~currentRotation = Quat(parent.basis).slerp(target_rotation.basis, delta * ROTATION_SPEED)
@@ -138,7 +136,7 @@ func _physics_process(delta):
 					#~~look_around_rotation = false
 					#~~characterInSight = true
 				else:
-					me.echo('Character is not in view: '+ str(target_character.transform.origin) )
+					me.echo('I cannot see this character, Character is out of my FOV: '+ str(target_character.transform.origin) )
 					#print('Character is in view')
 				pass
 			else:
@@ -211,7 +209,7 @@ func character_in_view(characterPosition:Vector3, currentPosition:Vector3, forwa
 	
 	var pa = (characterPosition - currentPosition).normalized()
 	
-	me.echo(str(characterPosition) +  ' <   > ' + str(currentPosition) + ' &&& ' + str(forwardVector)  +' ~~~~~~ ' + str(rad2deg( acos( pa.dot(forwardVector) ) ) ) )
+	#me.echo(str(characterPosition) +  ' <   > ' + str(currentPosition) + ' &&& ' + str(forwardVector)  +' ~~~~~~ ' + str(rad2deg( acos( pa.dot(forwardVector) ) ) ) )
 		
 	# I want the character's origin, not his capsule, this is why
 	# This character in view will detect only the players origin, not a ray hitting a capsule...
@@ -283,7 +281,7 @@ func draw_field_of_view():
 
 	for i in range( ( me.field_of_view+1 ) * me.field_of_view_resolution):
 
-		var forward = initial_forward * field_of_view_ray_length
+		var forward = initial_forward * me.vision_max_distance
 
 		current_angle = deg2rad( start_angle + ( i / me.field_of_view_resolution )   )
 		#print('CURRENTANGLE',  start_angle + ( i / field_of_view_resolution ) )
@@ -329,8 +327,8 @@ func draw_field_of_view():
 		#var angle_reversed = rad2deg( acos(forwarded.normalized().dot(destVector.normalized())) )
 
 		if(int( float(i) / me.field_of_view_resolution ) % 10 == 0 and not field_of_view_array_filled):
-			var angle_reversed = rad2deg( acos( (initial_forward * field_of_view_ray_length).normalized().dot( destVector.normalized() ) ) )
+			var angle_reversed = rad2deg( acos( (initial_forward * me.vision_max_distance).normalized().dot( destVector.normalized() ) ) )
 			#print(' ANGLE : ', rad2deg(current_angle), origin_pos, destVector, \
-			#' DOT : ', (initial_forward * field_of_view_ray_length).normalized().dot(destVector.normalized()), ' Reversed Angle: ', angle_reversed)
+			#' DOT : ', (initial_forward * me.vision_max_distance).normalized().dot(destVector.normalized()), ' Reversed Angle: ', angle_reversed)
 
 	field_of_view_array_filled = true

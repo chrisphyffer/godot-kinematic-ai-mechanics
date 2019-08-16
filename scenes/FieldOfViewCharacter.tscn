@@ -99,7 +99,7 @@ material/0 = null
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/MeshInstance/StaticBodyFloor"]
 shape = SubResource( 11 )
 
-[node name="SimpleMan" parent="." groups=[
+[node name="Enemy" parent="." groups=[
 "Character",
 ] instance=ExtResource( 4 )]
 transform = Transform( 0.642788, 0, -0.766044, 0, 1, 0, 0.766044, 0, 0.642788, 0, 0, 0 )
@@ -109,7 +109,9 @@ waypoints = [ NodePath("../Waypoint"), NodePath("../Waypoint2"), NodePath("../Wa
 hostility_level = 4
 fov_height = 1.5
 field_of_view = 180
-field_of_view_resolution = 0.1
+vision_max_distance = 10.0
+radius_of_awareness = 5.0
+rotation_speed = 2.0
 body_material = ExtResource( 5 )
 navLevelPath = NodePath("../Navigation")
 

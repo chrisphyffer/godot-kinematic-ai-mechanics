@@ -41,3 +41,5 @@ func _input(event):
 func _physics_process(delta):
 	if not me.navigation_path:
 		me.set_travel_speed(0)
+		
+	me.echo('The following characters in my awareness have the following hostility levels.')

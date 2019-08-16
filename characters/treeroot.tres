@@ -1,31 +1,85 @@
-[gd_resource type="AnimationNodeBlendTree" load_steps=6 format=2]
+[gd_resource type="AnimationNodeBlendTree" load_steps=18 format=2]
 
-[sub_resource type="AnimationNodeAnimation" id=1]
-animation = "Idle"
+[sub_resource type="AnimationNodeAnimation" id=9]
+animation = "AttackQuickTurn"
+
+[sub_resource type="AnimationNodeAnimation" id=10]
+animation = "QuickTurn"
+
+[sub_resource type="AnimationNodeAnimation" id=11]
+animation = "AttackPunch"
+
+[sub_resource type="AnimationNodeOneShot" id=7]
+
+[sub_resource type="AnimationNodeOneShot" id=18]
+
+[sub_resource type="AnimationNodeOneShot" id=13]
+
+[sub_resource type="AnimationNodeOneShot" id=15]
+
+[sub_resource type="AnimationNodeOneShot" id=16]
 
 [sub_resource type="AnimationNodeAnimation" id=2]
-animation = "Walk"
+animation = "Idle"
 
 [sub_resource type="AnimationNodeAnimation" id=3]
+animation = "Walk"
+
+[sub_resource type="AnimationNodeAnimation" id=4]
 animation = "Run"
 
-[sub_resource type="AnimationNodeBlendSpace1D" id=4]
-blend_point_0/node = SubResource( 1 )
+[sub_resource type="AnimationNodeBlendSpace1D" id=5]
+blend_point_0/node = SubResource( 2 )
 blend_point_0/pos = 0.0
-blend_point_1/node = SubResource( 2 )
+blend_point_1/node = SubResource( 3 )
 blend_point_1/pos = 1.0
-blend_point_2/node = SubResource( 3 )
+blend_point_2/node = SubResource( 4 )
 blend_point_2/pos = 2.0
 min_space = 0.0
 max_space = 2.0
 
-[sub_resource type="AnimationNodeTimeScale" id=5]
+[sub_resource type="AnimationNodeTimeScale" id=6]
+
+[sub_resource type="AnimationNodeOneShot" id=17]
+
+[sub_resource type="AnimationNodeAnimation" id=8]
+animation = "AttackBowShot"
+
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "AttackGreatSwordSlash"
+
+[sub_resource type="AnimationNodeAnimation" id=14]
+animation = "AttackGunFire"
 
 [resource]
-graph_offset = Vector2( -282, 20 )
-nodes/Locomotion/node = SubResource( 4 )
-nodes/Locomotion/position = Vector2( -100, 120 )
-nodes/LocomotionTimeScale/node = SubResource( 5 )
-nodes/LocomotionTimeScale/position = Vector2( 200, 80 )
-nodes/output/position = Vector2( 440, 140 )
-node_connections = [ "output", 0, "LocomotionTimeScale", "LocomotionTimeScale", 0, "Locomotion" ]
+graph_offset = Vector2( 153, 157.5 )
+nodes/Animation/node = SubResource( 11 )
+nodes/Animation/position = Vector2( 780, 580 )
+"nodes/Animation 2/node" = SubResource( 9 )
+"nodes/Animation 2/position" = Vector2( 780, 400 )
+"nodes/Animation 3/node" = SubResource( 10 )
+"nodes/Animation 3/position" = Vector2( 800, 220 )
+nodes/AttackBowShot/node = SubResource( 7 )
+nodes/AttackBowShot/position = Vector2( 540, 160 )
+nodes/AttackGreatSwordSlash/node = SubResource( 18 )
+nodes/AttackGreatSwordSlash/position = Vector2( 540, 340 )
+nodes/AttackGunFire/node = SubResource( 13 )
+nodes/AttackGunFire/position = Vector2( 540, 520 )
+nodes/AttackPunch/node = SubResource( 15 )
+nodes/AttackPunch/position = Vector2( 980, 500 )
+nodes/AttackQuickTurn/node = SubResource( 16 )
+nodes/AttackQuickTurn/position = Vector2( 980, 320 )
+nodes/Locomotion/node = SubResource( 5 )
+nodes/Locomotion/position = Vector2( -320, 180 )
+nodes/LocomotionTimeScale/node = SubResource( 6 )
+nodes/LocomotionTimeScale/position = Vector2( -140, 180 )
+nodes/QuickTurn/node = SubResource( 17 )
+nodes/QuickTurn/position = Vector2( 980, 140 )
+nodes/anim_AttackBowShot/node = SubResource( 8 )
+nodes/anim_AttackBowShot/position = Vector2( 220, 220 )
+nodes/anim_AttackGreatSwordSlash/node = SubResource( 12 )
+nodes/anim_AttackGreatSwordSlash/position = Vector2( 220, 340 )
+nodes/anim_AttackGunFire/node = SubResource( 14 )
+nodes/anim_AttackGunFire/position = Vector2( 220, 460 )
+nodes/output/position = Vector2( 1180, 140 )
+node_connections = [ "output", 0, "QuickTurn", "LocomotionTimeScale", 0, "Locomotion", "AttackPunch", 0, "AttackGunFire", "AttackPunch", 1, "Animation", "AttackQuickTurn", 0, "AttackPunch", "AttackQuickTurn", 1, "Animation 2", "QuickTurn", 0, "AttackQuickTurn", "QuickTurn", 1, "Animation 3", "AttackGreatSwordSlash", 0, "AttackBowShot", "AttackGreatSwordSlash", 1, "anim_AttackGreatSwordSlash", "AttackGunFire", 0, "AttackGreatSwordSlash", "AttackGunFire", 1, "anim_AttackGunFire", "AttackBowShot", 0, "LocomotionTimeScale", "AttackBowShot", 1, "anim_AttackBowShot" ]
