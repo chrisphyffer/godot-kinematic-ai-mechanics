@@ -3,7 +3,7 @@ extends Node
 class_name CharacterDebug
 
 #https://godotengine.org/qa/3843/is-it-possible-to-draw-a-circular-arc
-func draw_circle_arc( center, radius, angleFrom:float=0.0, angleTo:float=359.0, color:Color=Color(1,1,1,1) ):
+func draw_circle_arc( center, radius, color:Color=Color(1,1,1,1), angleFrom:float=0.0, angleTo:float=359.0 ):
 	var nbPoints = 32
 	
 	print('DRAWING CIRCLE ARC')
@@ -25,18 +25,9 @@ func draw_circle_arc( center, radius, angleFrom:float=0.0, angleTo:float=359.0, 
 		print(point)
 	
 	draw_path_node.end()
-
-func draw_circle_arc_poly( center, radius, angleFrom, angleTo, color ):
-	var nbPoints = 32
-	var pointsArc = Vector2()
-	pointsArc.push_back(center)
-	var colors = Color()
-	
-	for i in range(nbPoints+1):
-	    var anglePoint = angleFrom + i*(angleTo-angleFrom)/nbPoints - 90
-	    pointsArc.push_back(center + Vector2( cos( deg2rad(anglePoint) ), sin( deg2rad(anglePoint) ) )* radius)
-	#draw_polygon(pointsArc, colors)
-	pass
+	print(draw_path_node)
+	get_parent().add_child(draw_path_node)
+	get_tree().get_root().add_child(draw_path_node)
 
 func draw_line(start, end, color, existingDrawNode:Node = null, attach_to_world:bool = false):
 	

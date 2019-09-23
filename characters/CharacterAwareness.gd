@@ -34,32 +34,42 @@ func _ready():
 
 	# Grab our initial Forward Vector
 	#initial_forward = get_tree().get_root().get_node( get_parent().get_path() ).transform.basis.z # GET THE REAL PARENTS TRANSFORM BASIS!!!! NOT THE ONE WITHIN THE WITHIN..
-	
 	initial_forward = Vector3(0,0,1)
 	me = get_parent()
 	debug_node = get_parent().get_node('Debug')
-	
+		
+	var shap = $Area/CollisionShape.get_shape()
+	shap.set_radius(me.radius_of_awareness)
 	
 	if me.debug_mode:
-		var line_collection = [
-			{'color': Color(1,0,0,1), 'end' : me.transform.origin + Vector3(0,me.fov_height+1,15), 'start' : me.transform.origin+Vector3(0,me.fov_height,0) },
-			{'color': Color(1,1,0,1), 'end' : me.global_transform.origin + Vector3(3,me.fov_height+1,15) , 'start' : global_transform.origin+Vector3(0,me.fov_height,0) }
-		]
-		
-		for i in range(0, line_collection.size()):
-			if me.debug_mode:
-				print(debug_node.draw_line(line_collection[i].start, line_collection[i].end, \
-					line_collection[i].color) )
-					
-		debug_node.draw_circle_arc(Vector3(0, me.fov_height, 0), me.radius_of_awareness)
-		
-	$Area/CollisionShape.shape.set('radius', me.radius_of_awareness)
+		print('RADIUS OF AWARENESS :: ', shap.get_radius())
 
 var rayNode = null
+var debug_draws_complete = false
 
 func _physics_process(delta):
 	var parent = me.transform
 	i_can_see_the_character = false
+
+	if me.debug_mode and not debug_draws_complete:
+		var line_collection = [
+			{'rayNode': null, 'color': Color(1,0,0,1), 'end' : me.transform.origin + Vector3(0, me.fov_height+1, 15), 'start' : me.transform.origin+Vector3(0,me.fov_height,0) },
+			{'rayNode': null, 'color': Color(1,1,0,1), 'end' : me.global_transform.origin + Vector3(0 ,me.fov_height+1, 15) , 'start' : me.global_transform.origin+Vector3(0,me.fov_height,0) }
+		]
+		
+		for i in range(0, line_collection.size()):
+			if me.debug_mode:
+				line_collection[i].rayNode = debug_node.draw_line(line_collection[i].start,\
+				 line_collection[i].end, line_collection[i].color, \
+				line_collection[i].rayNode) 
+					
+		debug_node.draw_circle_arc(Vector3(0, me.fov_height, 0), \
+			me.radius_of_awareness, Color(1,1,0,1))
+			
+		debug_node.draw_circle_arc(Vector3(0, me.fov_height, 0), \
+			me.vision_max_distance, Color(0,0,0,1))
+		
+		debug_draws_complete = true
 
 	if me.debug_mode:
 		draw_field_of_view()
@@ -67,8 +77,6 @@ func _physics_process(delta):
 
 	if bodies_in_awareness.empty():
 		return
-
-
 
 	#if target_character:
 	#
@@ -81,8 +89,6 @@ func _physics_process(delta):
 	#		target_character
 	#
 	#	print(pa.dot(parent.basis.z))
-
-
 
 	if not target_character:
 		me.echo('I have no target Characters.. Looking for other characters..')
@@ -98,7 +104,7 @@ func _physics_process(delta):
 		char_pos.y = char_pos.y + target_height
 		
 		var parent_transform = parent.origin + Vector3(0,target_height,0)
-		me.echo('I have a target character ('+target_character.name+ str(target_character.transform.origin) + '), checking if they are on my field of view.')
+		#me.echo('I have a target character ('+target_character.name+ str(target_character.transform.origin) + '), checking if they are on my field of view.')
 		
 		# ROTATION IS BACKWARDS -Z IN GODOT....
 		
@@ -136,7 +142,7 @@ func _physics_process(delta):
 					#~~look_around_rotation = false
 					#~~characterInSight = true
 				else:
-					me.echo('I cannot see this character, Character is out of my FOV: '+ str(target_character.transform.origin) )
+					me.echo('I cannot see this character, Character is out of my FOV: ')
 					#print('Character is in view')
 				pass
 			else:

@@ -19,16 +19,30 @@ export(float) var character_height = 1.0
 export(int) var health = 100
 export(int) var mana = 100
 var attack_list = [
-	Attack.new('AttackPunch', 
-			Attack.ATTACK_TYPE.FRONTAL_ASSAULT, \
-			1.0, 2.0, 'AttackPunch',
-			[AttackRule.new('distance', 2000.0)])
+	Attack.new('AttackPunch', Attack.ATTACK_TYPE.FRONTAL_ASSAULT,
+		1.0, 2.0, 'AttackPunch',
+		[AttackRule.new('distance', 2000.0)]),
+	Attack.new('AttackBowShot', Attack.ATTACK_TYPE.RANGED,
+		1.0, 2.0, 'AttackBowShot',
+		[AttackRule.new('distance', 6.0, false, true)]),
+	Attack.new('AttackGreatSwordSlash', Attack.ATTACK_TYPE.FRONTAL_ASSAULT,
+		1.0, 2.0, 'AttackGreatSwordSlash',
+		[AttackRule.new('distance', 2000.0)])
 ]
 
 
 ###################
 # AI Settings
 export(bool) var controlled_by_player = true
+
+#### Battle Strategy
+enum BATTLE_STRATEGY { OFFENSIVE, DEFENSIVE }
+enum BATTLE_POSITION { RANGED, CLOSE_COMBAT }
+export(BATTLE_STRATEGY) var battle_strategy = BATTLE_STRATEGY.OFFENSIVE
+export(BATTLE_POSITION) var battle_position = BATTLE_POSITION.RANGED
+
+
+#### Patrol
 export(Array, NodePath) var waypoints
 export(bool) var patrol_waypoints = true
 
@@ -156,7 +170,7 @@ func _process_movement(delta):
 		return
 
 	if typeof(navigation_path) != TYPE_ARRAY or navigation_path.empty():
-		echo('Navigation Path is not valid type or empty...', true)
+		echo('Navigation Path is not valid type or empty...')
 		$AnimationTree["parameters/Locomotion/blend_position"] = 0
 		return
 
@@ -252,12 +266,12 @@ func do_debug_draw_path(clear_draw_path_only:bool = false):
 func set_navigation_path(end: Vector3):
 	var _paths = navLevel.generate_path(self, end)
 	if typeof(_paths) == TYPE_ARRAY and not _paths.empty():
-		echo('I have generated a path to : ' + str(end), true)
+		#echo('I have generated a path to : ' + str(end), true)
 		navigation_path = _paths
 		do_debug_draw_path()
 		return true
 	
-	echo('I cannot generate a path to : ' + str(end), true)
+	#echo('I cannot generate a path to : ' + str(end), true)
 	path_fail = true
 	return false
 
@@ -269,18 +283,20 @@ func clear_navigation_path():
 var debug_echo_queue:Array = []
 func echo( message:String = 'Empty Message..', queue:bool = false):
 	
-	if queue:
-		var found = false
-		if not debug_echo_queue.empty():
-			for msg in debug_echo_queue:
-				if msg == message:
-					found = true
-					break
-		
-		if not found:
-			debug_echo_queue.append(message)
+	if not debug_mode:
+		return false
 	
-	if debug_mode and debug_echo_interval >= 1:
+	var found = false
+	if not debug_echo_queue.empty():
+		for msg in debug_echo_queue:
+			if msg == message:
+				found = true
+				break
+	
+	if not found:
+		debug_echo_queue.append(message)
+	
+	if debug_echo_interval >= 1:
 		if not debug_echo_queue.empty():
 			for msg in debug_echo_queue:
 				print(self.name, ' : ', msg)

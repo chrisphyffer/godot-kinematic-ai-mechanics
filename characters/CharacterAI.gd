@@ -25,7 +25,6 @@ func _ready():
 
 var on_alert:bool = false
 var sweep_for_player_in_range:bool = false
-var currently_attacking:bool = false
 var battle_mode:bool = false
 var chosen_attack = false
 
@@ -42,7 +41,7 @@ func _physics_process(delta):
 		me.process_movement = false
 		return
 	
-	me.echo('My hostility level is : ' + str(me.hostility_level) + str(me.HOSTILITY_LEVELS.HUNTER))
+	me.echo('My hostility level is : ' + str(me.hostility_level))
 	
 	if me.hostility_level == me.HOSTILITY_LEVELS.HUNTER:
 		
@@ -57,12 +56,13 @@ func _physics_process(delta):
 			# around a wall to see if the character is still there.
 			duration_search_for_target += delta
 			
-		elif not currently_attacking and sweep_for_player_in_range and not awareness.target_character:
+		elif battle_mode and not awareness.target_character:
 			me.echo('This character is far, so I must be on alert...', true)
 			on_alert = true
 			duration_search_for_target += delta
 	
 	if duration_search_for_target >= me.time_to_search_for_target:
+		me.echo('I am done trying to find target, going back to normal routine.')
 		battle_mode = false
 		duration_search_for_target = 0
 	
@@ -126,10 +126,9 @@ func do_battle():
 		# Let the animation call the necessary particle fx and character specific functions.
 		
 		me.echo('I choose a ranged Attack: ' + str(chosen_attack), true)
-		
+		me.clear_navigation_path()
+		me.set_travel_speed(0)
 		attack()
-		
-		pass
 			
 	elif chosen_attack.attack_type == Attack.ATTACK_TYPE.FRONTAL_ASSAULT:
 		me.echo('I choose a Frontal Attack: ' + str(chosen_attack), true)
@@ -159,7 +158,7 @@ func charge_to_attack():
 		#me.navigation_path[me.navigation_path.size()-1] = vec_dist_for_anim
 		me.set_navigation_path(target_location)
 		me.set_travel_speed(chosen_attack.travel_speed)
-		me.echo('I ('+str(round(PA.length()))+')must meet the minimum distance of ('+str(chosen_attack.min_distance)+') to attack this character.', true)
+		me.echo('I ('+str(round(PA.length()))+') must meet the minimum distance of ('+str(chosen_attack.min_distance)+') to attack this character.', true)
 		#me.echo('I '+str(me.transform.origin)+' @ ('+str(PA.length())+')must meet the minimum distance of ('+str(chosen_attack.min_distance)+') to attack this character ' + str(target_location), true)
 
 func choose_attack():
@@ -221,7 +220,21 @@ func choose_attack():
 			possible_attacks.append(attack)
 	
 	if not possible_attacks.empty():
-		me.echo('I have attacks available to use.', true)
+		me.echo('I have '+str(possible_attacks.size())+' attacks available to use.', true)
+		
+		var attacks_from_strategy = []
+		for attack in possible_attacks:
+			me.echo('ATTACK STRATEGY: ' + str(attack.attack_type) + ' ' + str(attack.ATTACK_TYPE.RANGED))
+			me.echo('BATTLE POSITION: ' + str(me.battle_position) + ' ' + str(Character.BATTLE_POSITION.RANGED))
+			if attack.attack_type == Attack.ATTACK_TYPE.RANGED and\
+				me.battle_position == Character.BATTLE_POSITION.RANGED:
+					attacks_from_strategy.append(attack)
+		
+		if not attacks_from_strategy.empty():
+			me.echo('Attacking from strategy..')
+			return attacks_from_strategy[rand_range(0, attacks_from_strategy.size()-1) ]
+		
+		me.echo('No attacks from strategy...')
 		return possible_attacks[rand_range(0, possible_attacks.size()-1) ]
 	else:
 		me.echo('I have no possible attacks available to me..', true)

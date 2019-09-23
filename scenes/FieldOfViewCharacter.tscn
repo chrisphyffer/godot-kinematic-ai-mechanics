@@ -1,12 +1,11 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://scenes/FieldOfViewCharacter.gd" type="Script" id=1]
-[ext_resource path="res://NavigationManager.gd" type="Script" id=2]
-[ext_resource path="res://materials/grey.tres" type="Material" id=3]
-[ext_resource path="res://characters/Character.tscn" type="PackedScene" id=4]
-[ext_resource path="res://materials/red.material" type="Material" id=5]
-[ext_resource path="res://materials/black.material" type="Material" id=6]
-[ext_resource path="res://scenes/Waypoint.tscn" type="PackedScene" id=7]
+[ext_resource path="res://NavigationManager.gd" type="Script" id=1]
+[ext_resource path="res://materials/grey.tres" type="Material" id=2]
+[ext_resource path="res://characters/Character.tscn" type="PackedScene" id=3]
+[ext_resource path="res://materials/red.material" type="Material" id=4]
+[ext_resource path="res://materials/black.material" type="Material" id=5]
+[ext_resource path="res://GameLogic/Waypoint.tscn" type="PackedScene" id=6]
 
 [sub_resource type="ProceduralSky" id=1]
 
@@ -37,14 +36,13 @@ size = Vector3( 5, 4, 2 )
 points = PoolVector3Array( -2.5, 2, 1, 2.5, 2, -1, 2.5, 2, 1, -2.5, 2, -1, -2.5, -2, 1, 2.5, -2, -1, 2.5, -2, 1, -2.5, -2, -1, 2.5, 2, 1, -2.5, 2, -1, 2.5, 2, -1, -2.5, 2, 1, 2.5, -2, 1, -2.5, -2, -1, 2.5, -2, -1, -2.5, -2, 1, 2.5, 2, 1, -2.5, -2, 1, -2.5, 2, 1, 2.5, -2, 1, 2.5, 2, -1, -2.5, -2, -1, -2.5, 2, -1, 2.5, -2, -1 )
 
 [sub_resource type="PlaneMesh" id=10]
-material = ExtResource( 3 )
+material = ExtResource( 2 )
 size = Vector2( 20, 20 )
 
 [sub_resource type="ConvexPolygonShape" id=11]
 points = PoolVector3Array( 10, 0, 10, -10, 0, 10, 10, 0, -10, -10, 0, -10 )
 
 [node name="Spatial" type="Spatial"]
-script = ExtResource( 1 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 2 )
@@ -54,9 +52,10 @@ transform = Transform( 0.432122, -0.507023, 0.745787, 0, 0.826985, 0.562225, -0.
 
 [node name="Navigation" type="Navigation" parent="."]
 editor/display_folded = true
-script = ExtResource( 2 )
+script = ExtResource( 1 )
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Navigation"]
+editor/display_folded = true
 navmesh = SubResource( 3 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="Navigation/NavigationMeshInstance"]
@@ -101,7 +100,7 @@ shape = SubResource( 11 )
 
 [node name="Enemy" parent="." groups=[
 "Character",
-] instance=ExtResource( 4 )]
+] instance=ExtResource( 3 )]
 transform = Transform( 0.642788, 0, -0.766044, 0, 1, 0, 0.766044, 0, 0.642788, 0, 0, 0 )
 debug_mode = true
 controlled_by_player = false
@@ -109,19 +108,20 @@ waypoints = [ NodePath("../Waypoint"), NodePath("../Waypoint2"), NodePath("../Wa
 hostility_level = 4
 fov_height = 1.5
 field_of_view = 180
-vision_max_distance = 10.0
+field_of_view_resolution = 3.0
+vision_max_distance = 1.0
 radius_of_awareness = 5.0
 rotation_speed = 2.0
-body_material = ExtResource( 5 )
+body_material = ExtResource( 4 )
 navLevelPath = NodePath("../Navigation")
 
 [node name="Player" parent="." groups=[
 "Character",
-] instance=ExtResource( 4 )]
+] instance=ExtResource( 3 )]
 transform = Transform( 0.599563, 0, -0.800327, 0, 1, 0, 0.800327, 0, 0.599563, -3.70036, 0.058192, 1.45405 )
 fov_height = 1.5
 field_of_view_resolution = 3.0
-body_material = ExtResource( 6 )
+body_material = ExtResource( 5 )
 default_locomotion_speed = 2.0
 navLevelPath = NodePath("../Navigation")
 
@@ -129,18 +129,18 @@ navLevelPath = NodePath("../Navigation")
 transform = Transform( 0.610289, -0.428477, 0.666299, 0, 0.841097, 0.540884, -0.792179, -0.330096, 0.513312, 2.79566, 3.27864, 0.995995 )
 shadow_enabled = true
 
-[node name="Waypoint" parent="." instance=ExtResource( 7 )]
+[node name="Waypoint" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.73279, 1.03687, 6.34591 )
 visible = true
 
-[node name="Waypoint2" parent="." instance=ExtResource( 7 )]
+[node name="Waypoint2" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0684, 1.03687, -3.11929 )
 visible = true
 
-[node name="Waypoint3" parent="." instance=ExtResource( 7 )]
+[node name="Waypoint3" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.45255, 1.03687, -3.46275 )
 visible = true
 
-[node name="Waypoint4" parent="." instance=ExtResource( 7 )]
+[node name="Waypoint4" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.217076, 1.03687, 7.29429 )
 visible = true

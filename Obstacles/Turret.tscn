@@ -34,8 +34,6 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0,
 shape = SubResource( 2 )
 
 [node name="FieldOfView" parent="." instance=ExtResource( 2 )]
-field_of_view_resolution = null
-field_of_view_ray_length = null
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0, 0.707801 )
