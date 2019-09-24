@@ -6,12 +6,15 @@ AI Mechanics with Emphasis on Root Motion Kinematic Characters
 
 Author: Chris Phyffer (https://phyffer.com)
 
-A study on developing NPC, Enemy and Beast A.I in Godot Engine 3.1.1
+A **study** on developing NPC, Enemy and Beast A.I in Godot Engine 3.1.1
 
 This project includes:
+- Simple A.I - Waypoints, Behavior
 - Navigation through the navmesh with Root Motion Rigged Kinematic Characters
 - Customizeable Field of View with Debug Scanlines
 - Raycast to Character (So that characters may hide behind other bodies.)
+
+Support Godot: https://godotengine.org
 
 # License
 Written By Christopher Phyffer (2019)

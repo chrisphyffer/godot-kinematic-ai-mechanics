@@ -104,6 +104,7 @@ shape = SubResource( 11 )
 transform = Transform( 0.642788, 0, -0.766044, 0, 1, 0, 0.766044, 0, 0.642788, 0, 0, 0 )
 debug_mode = true
 controlled_by_player = false
+battle_position = 1
 waypoints = [ NodePath("../Waypoint"), NodePath("../Waypoint2"), NodePath("../Waypoint3"), NodePath("../Waypoint4") ]
 hostility_level = 4
 fov_height = 1.5
